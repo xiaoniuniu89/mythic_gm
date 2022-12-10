@@ -220,7 +220,7 @@ function generatOddsValue() {
     oddIs = [10, 15, 25, 35, 50, 65, 75, 85, 95];
   } else if (getOddsValue(slideIndex) === "Somewhat likely"){
     oddIs = [20, 25, 45, 50, 65, 80, 85, 90, 95];
-  }else if (getOddsValue(slideIndex) === "likely"){
+  }else if (getOddsValue(slideIndex) === "Likely"){
     oddIs = [25, 35, 50, 55, 75, 85, 90, 95, 100];
   }else if (getOddsValue(slideIndex) === "Very likely"){
     oddIs = [45, 50, 65, 75, 85, 90, 95, 95, 105];
@@ -251,9 +251,11 @@ a random event with a focus. */
 
 function generateAnswer(){
   var randomInt = (Math.floor(Math.random() * 100 +1 ));
+  console.log(randomInt, chaosNumber)
   if(randomInt % 11 == 0 && (randomInt / 11) < (chaosNumber +1)){
     randomEventAnswer();
   } else {
+    console.log(randomInt, chaosNumber, oddIs[chaosNumber])
     if (randomInt <= (oddIs[chaosNumber]) && randomInt < (oddIs[chaosNumber] / 5)){
       displayBox.innerHTML = "<h3 class='word'>yes</h3><h3 class='word'>Exceptional</h3>";
     } else if (randomInt <= (oddIs[chaosNumber])) {
