@@ -6,3 +6,10 @@ __pycache__/
 *.py[cod]
 node_modules/
 .github/
+
+# React build output
+build/
+src/images/
+
+# Dependencies
+package-lock.json
