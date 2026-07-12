@@ -1,0 +1,399 @@
+--- PAGE 187 ---
+Rules Summary
+A summary of Mythic Game Master Emulator systems.
+Asking Fate Questions
+Use Fate Questions to learn new details about 
+your adventure.
+  FOLLOW YOUR EXPECTATIONS:  Fill 
+in details about your adventure following 
+your expectations.
+  TEST EXPECTATIONS:  If you think 
+an expectation should be tested because it 
+is important or uncertain, then ask a Fate 
+Question.
+  FATE CHART OR FATE CHECK:  Test the 
+expectation using a Yes/No Question resolved 
+either using the Fate Chart or a Fate Check.
+Fate Chart
+  FORM A QUESTION: Ask a Yes/No question.
+  ASSIGN ODDS:  Give the Odds of the 
+Question being a Yes: 50/50, Likely, Very 
+Likely, Nearly Certain, Certain, Unlikely, Very 
+Unlikely, Nearly Impossible, or Impossible.
+  CHECK THE FATE CHART: Check the 
+Fate Chart for your Odds, looking up the 
+chance for a Yes in the column corresponding 
+to the current Chaos Factor.
+  ROLL 1D100: 
+ -  If this roll is equal to or less than the 
+large number found on the Fate Chart, 
+then the answer is Yes. 
+ -  I f it’s equal to or less than the smaller 
+number to the left then it is an 
+Exceptional Yes. 
+ -  I f it’s greater than the large number then 
+the answer is No. 
+ -  I f it’s equal to or greater than the 
+smaller number to the right then it’s an 
+Exceptional No.
+  RANDOM EVENT: If you rolled a double 
+digit number (11, 22, 33, 44, 55, 66, 77, 88, or 
+99) and the single digit value of that number 
+(1, 2, 3, 4, 5, 6, 7, 8, or 9) is equal to or less 
+than the current Chaos Factor then a Random 
+Event happens in addition to the answer to 
+your Question.
+  INTERPRET THE RESULTS
+Fate Check
+  FORM A QUESTION: Ask a Yes/No question.
+  ASSIGN ODDS:  Give the Odds of the 
+Question being a Yes: 50/50, Likely, Very 
+Likely, Nearly Certain, Certain, Unlikely, Very 
+Unlikely, Nearly Impossible, or Impossible.
+  GET MODIFIERS:  Determine modifiers 
+for the Odds and the Chaos Factor, adding 
+them together.
+  ROLL 2D10: Roll 2d10, adding them together 
+and apply the modifiers to the roll. 
+ -  T he answer is Yes with a modified roll 
+total of 11 or more. 
+ -  A t otal of 18-20 is an Exceptional Yes. 
+ -  A r esult of 10 or less is a No. 
+ -  A r esult of 2-4 is an Exceptional No.
+186186
+
+
+--- PAGE 188 ---
+  RANDOM EVENT: If you rolled a double 
+digit number (11, 22, 33, 44, 55, 66, 77, 88, or 
+99) and the single digit value of that number 
+(1, 2, 3, 4, 5, 6, 7, 8, or 9) is equal to or less 
+than the current Chaos Factor then a Random 
+Event happens in addition to the answer to 
+your Question.
+  INTERPRET THE RESULTS
+Fate Questions As RPG Rules
+Use Mythic Fate Questions to replace rules in 
+your chosen RPG.
+  ASK FATE QUESTION:  Pose the rule as a 
+Mythic Yes/No Fate Question. Resolve the Fate 
+Question as normal.
+  CHAOS FACTOR:  Treat the Chaos Factor 
+as a value of 5, regardless of what the actual 
+current Chaos Factor is.
+  EXCEPTIONAL RESULTS:  Treat 
+Exceptional Yes or No as a regular Yes or No if 
+the rule being replaced doesn’t use degrees of 
+success or failure.
+  RANDOM EVENTS: Ignore Random Events 
+unless they make sense to include with the 
+replaced rule.
+Generating Random Events
+Random Events can happen when rolling for a Fate 
+Question or when you generate an Interrupt Scene.
+  CONSIDER CONTEXT:  The Random 
+Event is happening in relation to the Context 
+of your adventure, which helps guide your 
+interpretation of it.
+  DETERMINE EVENT FOCUS:  Roll 
+1d100 on the Random Event Focus Table to 
+discover what the Random Event is about. 
+Alternatively, you can choose the Event Focus 
+instead of rolling.
+  DETERMINE EVENT MEANING:  Choose 
+a Meaning Table that fits the Random Event 
+best and roll for two inspirational words. Use 
+the words to help interpret the Random Event.
+  INTERPRET:  Combining the adventure 
+Context, the Event Focus, and the Meaning 
+words, come up with an interpretation that 
+makes sense to you.
+Rolling On Lists
+Random Events will sometimes require you to roll 
+on the Threads List or Characters List to select a 
+specific Thread or Character.
+  DETERMINE HOW MANY SECTIONS 
+ARE ACTIVE:  If a section of the List has 
+an element in it then that section is active. 
+The active section furthest down the List 
+determines the first die to roll: nothing, d4, d6, 
+d8, or d10.
+  ROLL: If necessary, roll the die to determine 
+a section. Then roll a 1d10 to determine an 
+element in that section.
+  CHOOSE: If you roll an empty line then you 
+have the option to either choose an element 
+from anywhere on the List or to roll again.
+First Scene
+Choose a method to develop the first Scene of 
+an adventure.
+  INSPIRED IDEA:  Come up with an idea 
+rather than determining randomly.
+  R A NDOM EV ENT: Generate a Random 
+Event to form the start of the Scene.
+  MEANING TABLES:  Choose Meaning 
+Tables and roll as many word pairs as you need 
+for inspiration.
+186186 187187
+RULES SUMMARY
+
+--- PAGE 189 ---
+  4W: Roll on the Meaning Tables in a 
+structured way to get the Who, What, Where, 
+and Why of a Scene. 
+ -  W ho: Characters Elements Meaning 
+Table. 
+ -  W hat: Actions Meaning Tables. 
+ -  W here: Locations Elements Meaning 
+Table. 
+ -  W hy: Actions Meaning Tables.
+Testing Scenes
+  EXPECTED SCENE:  Decide how you 
+think the next Scene will begin. This is the 
+Expected Scene.
+  ROLL 1D10: Roll 1d10 to test the Expected 
+Scene. If you roll the Chaos Factor or less, and 
+the number is odd (1, 3, 5, 7, or 9) then the 
+Scene is an Altered Scene. If you roll the Chaos 
+Factor or less and the number is even (2, 4, 6, 
+or 8) then the Scene is an Interrupt Scene.
+Altered Scenes
+Generate an Altered Scene by modifying your 
+Expected Scene. Use one of the strategies below.
+  THE NEXT EXPECTATION:  This is the 
+default method. The Scene is what you would 
+next most expect.
+  A TWEAK:  Change one element in the 
+Expected Scene.
+  FATE QUESTION:  Ask a Fate Question to 
+help you choose how the Scene changes.
+  MEANING TABLES:  Choose a Meaning 
+Table and roll for a word pair as inspiration.
+  SCENE ADJUSTMENT TABLE:  Roll 1d10 
+on the Scene Adjustment Table.
+Interrupt Scenes
+  R A NDOM EV ENT: Generate a Random 
+Event and use that as the basis for the start of 
+the Scene.
+188188
+RULES SUMMARY
+
+
+--- PAGE 190 ---
+Begin And End Scenes
+Choose a method for how to decide when a Scene 
+begins and ends.
+  INTER EST: This is the default approach. 
+A Scene starts with something interesting 
+happening and ends when that interest is 
+concluded.
+  TIME OR LOCATION:  Scenes end when 
+there is a change in time or location.
+  NARRATIVE SHIFT:  A Scene ends 
+when there is a shift in the narrative of your 
+adventure, with the next Scene picking up with 
+that narrative change.
+  MOOD: Scenes end when you feel they have 
+run out of steam and it’s time to start a new one.
+  AUTOMATIC INTERRUPT:  Choose to 
+have a Scene begin as an Interrupt without 
+testing it against the Chaos Factor.
+Discovering Meaning
+Create details without using Fate Questions by 
+rolling for a word pair on a Meaning Table of 
+your choice. Interpret the results.
+Generating NPC Behavior
+  EXPECTATIONS:  If you have a clear idea 
+what the NPC will do or say, and the action 
+isn’t crucial to the adventure, then follow 
+your expectations for their action instead of 
+choosing randomly.
+  NO IDEA:  If you have no expectation for 
+what an NPC will do then roll a word pair on a 
+Meaning Table of your choice for inspiration.
+  EXPECTATION AND CRUCIAL:  If you 
+have an idea of what the NPC will do, and the 
+action is important to your adventure, then 
+frame the action as a Fate Question.
+End Of Scene Bookkeeping
+  EDIT LIST ELEMENTS:  Add new Threads 
+and NPCs that were important in the Scene 
+to the Threads and Characters Lists. For 
+Threads and Characters that were already on 
+the List, add another entry for them if they 
+were important in the Scene up to a maximum 
+of three on the List. Remove Threads and 
+Characters from the Lists that are no longer 
+relevant to the adventure.
+  ADJUST THE CHAOS FACTOR:  If the 
+Player Character was mostly in control of the 
+Scene then apply a -1 modifier to the Chaos 
+Factor, to a minimum of 1. If the Player 
+Character was mostly not in control during the 
+Scene then apply a +1 modifier to the Chaos 
+Factor to a maximum of 9.
+Determine NPC Statistics
+  EXPECTED STATISTIC VALUE:  Decide 
+what you think the value of an NPC statistic 
+should be.
+  ASK A FATE QUESTION:  Ask the Fate 
+Question “Does the NPC have a statistic of 
+this value?” Assign the Question Odds and 
+resolve it.
+  INTERPRET:  Interpret the results of the Fate 
+Question. As a guide:
+ - Y es: The value you expected.
+ -  E xceptional Yes: The value is about 
+25% higher.
+ - N o: The value is about 25% lower.
+ -  E xceptional No: The value is about 
+50% lower.
+ -  R andom Event: Generate a Random 
+Event as a special condition associated 
+with this statistic.
+188188 189189
+RULES SUMMARY
+
+
+--- PAGE 191 ---
+Thread Progress Track
+Use a Thread Progress Track to keep an adventure 
+focused on a particular Thread.
+  FOCUS THREAD:  Choose a Thread to be 
+the Focus Thread of the Progress Track.
+  CHOOSE A TRACK:  Choose which Track to 
+use, depending on how long you want it to take 
+to resolve the Thread. The choices are 10, 15, 
+or 20 point Tracks.
+  PROGRESS:  Making any Progress toward 
+resolving the Focus Thread in a Scene awards 2 
+Progress Points that are marked on the Track.
+  FL ASHPOINT: An especially important and 
+dramatic event happens in a Scene related to 
+the Focus Thread. Award 2 Progress Points and 
+mark the “Did A Flashpoint Happen?” box.
+  TRACK FLASHPOINT:  If you reach enough 
+Points on the Track to trigger a Flashpoint, and 
+one hasn’t already occurred in that phase of the 
+Track, then a Flashpoint event happens. Treat 
+this as a Random Event with an automatic 
+Event Focus of Current Context.
+  DISCOVERY CHECK:  Make a Discovery 
+Check when forward momentum has stalled 
+and you are out of ideas for how to proceed. 
+Ask the Fate Question “Is something 
+discovered?” Assign the Question Odds of no 
+less than 50/50.
+ -  Y es: Roll on the Thread Discovery 
+Check Table.
+ -  N o: Nothing useful is found.
+ -  E xceptional Yes: Roll twice on the 
+Thread Discovery Check Table.
+ -  E xceptional No: Nothing useful is found 
+and you cannot make another Discovery 
+Check during the rest of this Scene.
+  PLOT ARMOR:  The Focus Thread cannot be 
+resolved through normal Mythic play as long as 
+the Thread Progress Track is still in progress. 
+Any adventure results that would complete or 
+end the Thread must be interpreted in a way to 
+keep the Thread active.
+  CONCLUSION: When the Progress Track 
+is completed the Conclusion is triggered. 
+Generate a Random Event with an automatic 
+Event Focus of Current Context, with the 
+Context revolving around creating an Event 
+that can resolve and end the Thread Focus. If 
+it makes more sense, you can choose to delay 
+generating the Conclusion until the next Scene.
+Keyed Scenes
+Create special situations to trigger specific events 
+in your adventure.
+  KEYED SCENE TRIGGER:  Decide what 
+Triggers the Keyed Scene Event.
+  KEYED SCENE EVENT:  Decide what 
+happens when the Trigger occurs. The Event 
+happens at the beginning of the next Scene.
+Using Mythic With 
+Prepared Adventures
+  SCALING:  Decide on a scaling factor for 
+your Player Character in relation to the 
+adventure. Roughly, how powerful are they in 
+comparison to what the adventure is designed 
+for? Represent this comparison with a single 
+number that becomes the Diminisher Value. 
+For instance, 1/2, 1/3, 1/4, 1/5, etc.
+  APPLY DIMINISHER:  Apply the 
+Diminisher Value to all challenges met in the 
+adventure, reducing the number of encounters, 
+NPC statistics, and other values that challenge 
+your Player Character.
+  READ INTRO:  Read introductory portions 
+of the prepared adventure.
+190190
+RULES SUMMARY
+
+--- PAGE 192 ---
+  PREPARE LISTS:  Include any relevant 
+Threads or NPCs onto your Lists that seem 
+important from the adventure introduction.
+  ADVENTURE FEATURES:  Create a third 
+List, Adventure Features, and include on it 
+anything special about the prepared adventure 
+that you think should be on the List.
+  FIRST SCENE:  Create a first Scene based off 
+of how the prepared adventure suggests starting.
+  PLAY SCENE BY SCENE:  Play through the 
+adventure Scene by Scene, as you would with a 
+normal Mythic adventure, using the content of 
+the prepared adventure as Context.
+  TESTING EXPECTED SCENES:  Test 
+Scenes as normal, however instead of using 
+Altered and Interrupt Scenes, whenever you roll 
+equal to or less than the Chaos Factor you still 
+have the Expected Scene but it also starts with 
+a Random Event. 
+  ENCOUNTERS AND LOCATIONS:  
+When reading new sections of the prepared 
+adventure, read as little as possible before 
+deciding Player Character actions.
+  ASK FATE QUESTIONS:  Use Fate 
+Questions to decide the details and outcomes 
+of encounters when there is doubt.
+  RANDOM EVENTS: Use the Prepared 
+Adventure Event Focus Table instead of the 
+regular Random Event Focus Table.
+Peril Points
+Use Peril Points to change the narrative.
+  DECIDE QUANTITY:  Choose how many 
+Peril Points your Player Character gets. The 
+default number is 2.
+  DECIDE IF THEY REPLENISH:  Choose 
+if Peril Points reset to the quantity you chose at 
+the start of each adventuring session, or if they 
+are a one-time resource that does not replenish.
+  EXPEND PERIL POINTS:  Use a Peril Point 
+to avert an outcome that would otherwise end 
+the adventure or an important narrative.
+Mythic With The 
+Adventure Crafter
+  FIRST SCENE:  Generate a Turning Point or 
+two for inspiration for the first Scene.
+  INTERRUPT SCENES:  Replace Random 
+Events with Turning Points to generate  
+Interrupt Scenes.
+  LISTS: Use Mythic’s List system instead 
+of The Adventure Crafter’s Lists method. 
+References to Plotlines are considered Threads. 
+When rolling on a List for a Plot Point roll on 
+the full List, not just the sections that have 
+elements in them.
+  CHOOSE ...: When rolling an empty line on 
+a List for a Plot Point you have the additional 
+choice of Add A Thread or Add A Character. 
+If you Choose to select a Character on the 
+Characters List, you can include the Player 
+Character as an option even though they aren’t 
+on the List.
+190190 191191
+RULES SUMMARY

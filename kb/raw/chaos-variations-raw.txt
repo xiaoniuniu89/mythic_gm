@@ -1,0 +1,355 @@
+--- PAGE 147 ---
+stores. The next Expected Scene is about visiting 
+the jail to question the robbers.
+The Player tests the Expected Scene against the 
+Chaos Factor and it comes back as Interrupted. 
+Since the Player hasn’t chosen an Event Focus 
+yet in this adventure, and they don’t know how 
+to proceed with the main Thread, they decide 
+to choose the Event Focus for this Interrupt 
+instead of rolling for it. The Player selects 
+Move Toward A Thread and goes the extra 
+step of also selecting the Thread of “Solve the 
+mystery of the disappearances.” 
+The Player completes the Interrupt Random Event 
+by rolling on the Meaning Tables for inspiration 
+and gets “Inform” and “Enemy”.
+The Player interprets the results this way: 
+Oscar enters the jail where the three thieves are 
+slumped in a cell. Before he questions them one 
+starts talking about how they had to steal the 
+settlement’s food and supplies because another 
+group has been stealing theirs. This is new 
+information as the PC wasn’t aware there was 
+another community operating in the area. The 
+Player realizes this mystery group may be the ones 
+responsible for the missing townsfolk.
+In this example the Player’s adventure took a 
+turn toward the main Thread because they pushed 
+a Move Toward A Thread Event. Without that 
+nudge the Scene might have involved the PC 
+questioning the thieves and moving the robbery 
+Thread along. With the nudge the robbery Thread 
+pivots and becomes linked to the main Thread of 
+solving the mystery of the missing people.
+Make It Special
+Maybe the problem isn’t getting to the end of 
+an adventure, it’s making that end feel powerful. 
+You can give the end of your adventure more 
+weight by making it special.
+This is more of an attitude than a rule. 
+When you know a Scene is heading toward the 
+completion of an important Thread, give it all 
+the emotional energy you can muster. Make 
+interpretations of Fate Questions more impactful, 
+have Characters act more dramatically, infuse the 
+Scene with as much energy as you can.
+This is the end of the Thread, so you can take 
+your foot off the narrative brakes and let loose.
+Context is important in Mythic. Context informs 
+our expectations when making interpretations of 
+Mythic’s prompts. 
+Context can also apply to our expectations about 
+the meta aspects of the game. Wanting to make 
+the conclusion of your adventure special is, 
+itself, Context. You can use it to help power your 
+interpretations in this final Scene.
+For instance, your warrior has caught up with the 
+dread lich Brizas for a final confrontation. This 
+is the Thread conclusion you’ve been working 
+toward. You’re not sure if Brizas will fight or flee, 
+so you ask the Fate Question, “Does he fight?” 
+and get a Yes.
+In normal Context of this adventure, during 
+any other Scene, you might interpret this to 
+mean Brizas fires off an energy bolt. That’s a 
+standard attack for this NPC. But this Scene is the 
+conclusion and making it more dramatic is part of 
+the Context used for making interpretations. 
+With that Context in mind the Player may 
+interpret a Yes to mean Brizas unleashes his 
+most dramatic attack spell, The Agony Cries 
+Of A Thousand Souls. Normally you might only 
+have made this interpretation for such an all-out 
+attack if the Fate Question had come back with 
+Exceptional Yes. But this Scene isn’t a normal 
+Scene, it’s the apparent conclusion of a big 
+Thread. This encourages the Player to ramp up 
+their expectations. 
+USE CONTEXT TO POWER THE END
+146146
+VARIATIONS
+
+--- PAGE 148 ---
+CHOOSE YOUR 
+CHAOS FLAVOR
+The Chaos Factor has a big impact on the 
+answers to Fate Questions. The more extreme the 
+Chaos the greater the chances of answers skewing 
+toward a Yes or a No. Exceptional results are also 
+more common.
+This simulates a Game Master speeding up 
+or toning down the pace of a game, adjusting as 
+the adventure goes along. However, if you want 
+the Chaos Factor to have less influence on Fate 
+Questions you can use these modified rules.
+There are multiple versions of the Fate Chart 
+and Fate Check modifiers, each with differing 
+degrees of Chaos Factor influence. 
+ » The regular Fate Chart is the default with 
+the Chaos Factor having the maximum 
+influence on answers. 
+ » The Mid-Chaos Fate Chart tones it down, 
+cutting out the more extreme ranges of the 
+Chaos Factor’s influence. 
+ » The Low-Chaos Fate Chart takes it 
+down another notch, giving the Chaos 
+Factor just the slightest influence on Fate 
+Question answers. 
+ » Finally, there’s the No-Chaos Fate Chart, 
+where the Chaos Factor is removed entirely 
+and answers are based purely on the Odds.
+To lessen the effect of the Chaos Factor choose 
+one of the variant Fate Charts or Fate Check 
+Modifiers Tables to replace the default chart and 
+table when answering Fate Questions.
+You can find the tables on this page and the 
+next page as well as at the back of the book.
+MID-CHAOS FATE 
+CHECK MODIFIERS
+CHAOS 
+FACTOR ROLL MODIFIER
+9 +2
+7-8 +1
+4-6 None
+2-3  -1
+1 -2
+   MID-CHAOS FATE CHART
+ODDS
+Certain 15 75 96 17 85 98 18 90 99 19 95 100 20 99 x
+Nearly Certain 13 65 94 15 75 96 17 85 98 18 90 99 19 95 100
+Very Likely 10 50 91 13 65 94 15 75 96 17 85 98 18 90 99
+Likely 7 35 88 10 50 91 13 65 94 15 75 96 17 85 98
+50/50 5 25 86 7 35 88 10 50 91 13 65 94 15 75 96
+Unlikely 3 15 84 5 25 86 7 35 88 10 50 91 13 65 94
+Very Unlikely 2 10 83 3 15 84 5 25 86 7 35 88 10 50 91
+Nearly Impossible 1 5 82 2 10 83 3 15 84 5 25 86 7 35 88
+Impossible X 1 81 1 5 82 2 10 83 3 15 84 5 25 86
+CHAOS FACTOR 1 2-3 4-6 7-8 9
+146146 147147
+VARIATIONS
+
+--- PAGE 149 ---
+WHAT IS “A SESSION” 
+IN SOLO PLAY?
+Many role-playing systems refer to a game 
+session as a unit of time with rules attached to 
+the completion of a session. For instance, maybe 
+experience points are distributed for each session 
+of play.
+In traditional group role-play guided by a 
+Game Master sessions tend to include enough 
+time to accomplish a goal, making it a good unit 
+of measurement for Player Character progress.
+Solo role-playing sessions, however, aren’t 
+always so neatly divvied up. Every solo Player may 
+have their own approach to how long they play. 
+Many like to play for short periods of time as one 
+of the strengths of solo is starting and stopping 
+whenever you like. In short, the concept of a 
+“session” doesn’t mean the same thing in solo play 
+as it does in cooperative play.
+LOW-CHAOS FATE 
+CHECK MODIFIERS
+CHAOS 
+FACTOR ROLL MODIFIER
+8-9 +1
+3-7 None
+1-2  -1
+  LOW-CHAOS FATE CHART
+ODDS
+Certain 17 85 98 18 90 99 19 95 100
+Nearly Certain 15 75 96 17 85 98 18 90 99
+Very Likely 13 65 94 15 75 96 17 85 98
+Likely 10 50 91 13 65 94 15 75 96
+50/50 7 35 88 10 50 91 13 65 94
+Unlikely 5 25 86 7 35 88 10 50 91
+Very Unlikely 3 15 84 5 25 86 7 35 88
+Nearly Impossible 2 10 83 3 15 84 5 25 86
+Impossible 1 5 82 2 10 83 3 15 84
+CHAOS FACTOR 1-2 3-7 8-9
+NO-CHAOS 
+FATE CHART
+ODDS
+Certain 18 90 99
+Nearly Certain 17 85 98
+Very Likely 15 75 96
+Likely 13 65 94
+50/50 10 50 91
+Unlikely 7 35 88
+Very Unlikely 5 25 86
+Nearly Impossible 3 15 84
+Impossible 2 10 83
+148148
+VARIATIONS
+
+--- PAGE 150 ---
+So what is the best way for a solo Player to 
+decide what a session is when their chosen RPG 
+calls for it?
+You might think that choosing a set number 
+of Scenes may be the way to go. For instance, 
+5 Scenes or 8 Scenes is a session. But just like 
+solo sessions vary in length so do Scenes making 
+it impossible to assume that 5 or 8 Scenes 
+encompasses the kind of goals one would expect 
+to complete in a session.
+I think a better way to record the end 
+of a solo session is to look at meaning and 
+accomplishment.  If you end a Scene with your 
+Player Character having achieved a significant 
+adventure goal then that should constitute a 
+session, at least in terms of what your chosen 
+RPG is looking for.
+Probably the easiest way to determine when 
+such a goal has been reached is when you 
+complete a Thread, especially an important 
+Thread. If you finish a Thread that is less 
+important maybe only consider it the end of a 
+session if it’s been a while since you’ve completed 
+your last session. This way easily accomplished 
+Threads that are achieved in a Scene or two don’t 
+necessarily trigger a session and any benefits that 
+come with it.
+I think tying session rewards to Thread 
+accomplishment is an easier and more elegant way 
+to decide the end of a session than keeping track 
+of how much time you’ve spent or how many 
+Scenes have passed. If you play your solo games 
+in a patchwork fashion, maybe doing a few Scenes 
+before you go to work, then playing for an hour 
+on the weekend, maybe finishing a couple of 
+Scenes late at night, then the sum total of all that 
+adventuring becomes a meaningful session when 
+your PC achieves a Thread goal without the need 
+for additional bookkeeping specifically to identify 
+the session end.
+CONTROL YOUR 
+ADVENTURES WITH 
+KEYED SCENES
+A Mythic adventure can go just about 
+anywhere. The combination of your decisions 
+and expectations plus Mythic’s random processes 
+makes for adventures full of surprises.
+If you want to take more control over where 
+your adventure goes, however, you can create 
+narrative rules specific to your adventure using 
+Keyed Scenes. 
+Removing the Chaos Factor completely from Fate 
+Questions makes for a simple Fate Chart and 
+no Chaos Factor modifiers to a Fate Check. You 
+may want this if you want Fate Questions to only 
+respond to the Odds.
+This is also a good option if you are using Fate 
+Questions to replace game mechanics in your 
+chosen RPG (see “Using Fate Questions To 
+Replace RPG Rules” on 28). In this case you 
+might use one Fate Chart or Fate Check Modifiers 
+Table for regular, narrative Fate Questions and 
+the No-Chaos variety for game mechanics 
+Questions like task resolution.
+If you remove the Chaos Factor from Fate 
+Questions you will still need to keep track of 
+the Chaos Factor throughout your adventure. 
+It comes into play when testing Expected 
+Scenes and determining Random Events.
+If you want to reduce the influence of a shifting 
+Chaos Factor from those processes as well 
+you can restrict the range that the Chaos 
+Factor can shift to. For instance, if you want 
+the Chaos Factor to have less influence on 
+Expected Scenes and Random Events you 
+could restrict the Chaos Factor to a range of 
+3-7. If you want it to have even less control 
+then restrict it to 4-6 or always leave it at 5.
+A PLATE OF FATE, HOLD THE CHAOS
+148148 149149
+VARIATIONS
+
+--- PAGE 151 ---
+A Keyed Scene is a special event that sets a tone 
+to a Scene. You can tailor Keyed Scenes to any 
+trope or concept that you want. 
+Keyed Scenes allow you to control your 
+adventure in some interesting ways. For instance, 
+Keyed Scenes could be used as another way to 
+inject theme elements into your adventure. It 
+can also be used to guarantee that certain things 
+happen that you want to happen.
+Let’s say you’re running a campaign in a 
+zombie apocalypse. You’ve had some good 
+adventures in this setting, but you’re unhappy 
+with how infrequently your Player Character is 
+running into zombies. You want more zombie 
+action. You could use Keyed Scenes to insert 
+zombie encounters into your adventure by 
+following certain rules that you set up.
+These rules are called Triggers and they decide 
+when a Keyed Scene Event happens.
+Keyed Scene Trigger
+The Trigger is what tells you when a Keyed 
+Scene Event occurs. With a zombie adventure the 
+Trigger might be three Scenes that pass without 
+any zombie attacks taking place. After the third 
+Scene ends without an encounter the Keyed Scene 
+Event is Triggered and the next Scene now must 
+contain the Keyed Scene Event, a zombie attack.
+A Trigger can be just about anything. For a 
+dungeon delve maybe the Trigger is if you roll 
+a 6 on a 1d6 and the Keyed Scene Event is a 
+wandering monster encounter. For a superhero 
+trying to maintain control over their wild powers 
+the Trigger could be a total of 4 Scenes where 
+they use their powers at maximum and the Keyed 
+Scene Event is their powers suddenly raging out 
+of control. Maybe for an adventure that you are 
+trying to keep on a schedule your Trigger is one 
+hour of real time passing and the Keyed Scene 
+Event is an automatic Move Toward A Thread 
+Random Event.
+You can think of the Keyed Scene Trigger 
+as a sort of If/Then computer statement. If X 
+happens then Y happens. The Trigger can even 
+be something compound. For instance, let’s say 
+in our superhero adventure you like the idea that 
+after four times of maxing out your powers your 
+You’re thirsting for an adventure with battle, this 
+Keyed Scene will make it happen.
+KEYED SCENE: LET’S RUMBLE!
+TRIGGER
+Complete 2 Scenes in a row without a fight.
+EVENT
+A combat will happen in this Keyed Scene. 
+Roll for a Random Event to generate it with 
+an automatic Focus of Current Context, the 
+Context being that this Event is a fight.
+This Keyed Scene is designed for an adventure 
+that is meant to lead up to a confrontation with 
+a main villain. You want plenty of time to get 
+your PC to that point, but you don’t want the 
+adventure to drag on too long before this final big 
+event. This Keyed Scene helps to make sure that 
+doesn’t happen.
+KEYED SCENE: BOSS FIGHT
+TRIGGER
+After 15 Scenes if a final confrontation with 
+the villain has not taken place then a roll of 
+1-3 on a 1d10 means the confrontation takes 
+place in the next Scene. Make this roll at the 
+end of every Scene after the 15th Scene.
+EVENT
+The Keyed Scene features a climactic 
+confrontation with the main villain. Create a 
+Random Event around this confrontation.
+150150
+VARIATIONS
