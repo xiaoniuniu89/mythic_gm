@@ -40,7 +40,8 @@ async function loadCampaigns() {
 }
 
 async function isInvited(user) {
-  const invitation = await getDoc(doc(db, "allowedUsers", user.uid));
+  if (!user.email) return false;
+  const invitation = await getDoc(doc(db, "allowedEmails", user.email));
   return invitation.exists();
 }
 

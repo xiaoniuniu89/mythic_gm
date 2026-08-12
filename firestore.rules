@@ -5,15 +5,16 @@ service cloud.firestore {
     function isInvited(userId) {
       return request.auth != null
         && request.auth.uid == userId
-        && exists(/databases/$(database)/documents/allowedUsers/$(userId));
+        && request.auth.token.email != null
+        && exists(/databases/$(database)/documents/allowedEmails/$(request.auth.token.email));
     }
 
     match /users/{userId}/{document=**} {
       allow read, write: if isInvited(userId);
     }
 
-    match /allowedUsers/{userId} {
-      allow get: if request.auth != null && request.auth.uid == userId;
+    match /allowedEmails/{email} {
+      allow get: if request.auth != null && request.auth.token.email == email;
       allow list, create, update, delete: if false;
     }
   }
