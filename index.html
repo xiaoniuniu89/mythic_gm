@@ -1,218 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A campaign companion for Mythic GM Emulator play.">
+  <title>Mythic GM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Raleway&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Eater&display=swap" rel="stylesheet">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="UTF-8">
-  <meta name="description" content="Mythic Gm is digital implimentation of the Mythic GM book. It is a tool for roleplaying games to emulate the game master.">
-  <meta name="keywords" content="mythic gm, gm emulator, dm emulator, solo ttrpg, solo rpg, dungeon master, game master, tabletop rpg, ttrpg, dungeons and dragons">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mythic GM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Eater&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
 <body>
-  <section>
-    <h1 id="logo">Mythic GM</h1>
-  <!--How to use section contained in modal-->
-    <div id="how-to">
-      <!--To open modal-->
-      <button id="how-to-btn">Glossary</button>
-      <!--Modal window-->
-      <div id="how-to-modal" class="modal">
-        <!--Content of modal-->
-        <div class="how-to-content">
-          <button aria-label="close" id="close-how-to"><i class="far fa-times-circle"></i></button>
-          <h3 id="glossary">Glossary</h3>
-          <br>
-          <p>NPC = Non Player Character - Any character that the players do not control.</p>
-          <br>
-          <p>PC = Player Character - Any characters controlled by players.</p>
-          <br>
-          <h4>Remote Event</h4>
-          <br>
-          <p>
-            Something important has happened that bears on the adventure, but the player characters were not present when the event occurred, they only learn about it remotely. This
-            can result in many ways, from a non-player character telling them some piece of news, to coming across evidence of this other event.
-          </p>
-          <br>
-          <h4>NPC Action</h4>
-          <p>
-            An existing non-player character makes a surprise action.
-          </p>
-          <br>
-          <h4>introduce a new PC</h4>
-          <br>
-          <p>
-            A brand new face is involved in the adventure. This may be someone the player characters had expected to meet, or a surprise.
-          </p>
-          <br>
-          <h4>Move towards a thread</h4>
-          <br>
-          <p>
-            Threads are the goals that player characters are going after. These are the unresolved missions that the players are trying to solve. There could be more than one thread in an
-            adventure, some big and important while others of less consequence. 
-          </p>
-          <br>
-          <h4>Move away from a thread</h4>
-          <br>
-          <p>
-            Just as the previous random event will help player characters solve an open thread, this random event will make it harder. 
-          </p>
-          <br>
-          <h4>Close a thread</h4>
-          <br>
-          <p>
-            The random event is so important it actually closes an open thread. To close a thread, the issue is resolved or simply goes away out of the PC's minds.
-          </p>
-          <br>
-          <h4>PC/NPC negative/positive</h4>
-          <br>
-          <p>
-            Something bad, or good, happens to a player character, or non player character. 
-          </p>
-          <br>
-          <h4>Ambiguous event</h4>
-          <br>
-          <p>
-            This is a catchall category for anything that does not directly impact characters or NPCs. The event is not necessarily bad or good. The event can be important, but often it is more 
-            atmospheric to the scene.
-          </p>
-          <br>       
-        </div>
+  <main class="app-shell">
+    <section id="campaign-home" class="campaign-home" aria-labelledby="home-title">
+      <header class="home-header">
+        <p class="brand-mark">Mythic GM</p>
+        <button class="text-button" type="button" data-action="open-help">How it works</button>
+      </header>
+      <div class="home-intro">
+        <p class="eyebrow">Campaign journal & oracle</p>
+        <h1 id="home-title">Where the next<br>chapter begins.</h1>
+        <p>Choose a campaign to return to its oracle, scenes, characters, and open threads—or begin a new tale.</p>
       </div>
-    </div>
-  </section>
-    <div id="tab-container">
-      <!--tab links-->
-      <div class="tab">
-        <button id="list-button" class="tablink" onclick="openTab(event, 'list')">Threads</button>
-        <button id="journal-button" class="tablink" onclick="openTab(event, 'journal')">Scenes</button>
-        <button id="oracle-button" class="tablink active" onclick="openTab(event, 'oracle')">Oracle</button>
+      <div class="campaign-actions">
+        <h2>Your campaigns</h2>
+        <button class="primary-button" type="button" data-action="new-campaign">New campaign <span aria-hidden="true">+</span></button>
       </div>
-  </div>
-  <!--emulator-->
-  <section id="emulator">
-    <div id="emulator-window">
-      <!--tab content-->
-      <!--oracle-->
-      <div id="oracle" class="tabcontent">
-        <div id="chaos">
-          <h2 id="chaos-txt">Chaos</h2>
-          <h3 id="chaos-number">5</h3>
-          <button aria-label="previous" id="chaos-prev">&#10094;</button>
-              <button aria-label="next" id="chaos-next">&#10095;</button>
+      <div id="campaign-list" class="campaign-list" aria-live="polite"></div>
+    </section>
+
+    <section id="workspace" class="workspace" hidden aria-label="Campaign workspace">
+      <header class="workspace-header">
+        <button class="brand-mark brand-button" type="button" data-action="return-home" aria-label="Return to campaigns">Mythic GM</button>
+        <div class="campaign-identity">
+          <p class="eyebrow">Active campaign</p>
+          <h1 id="active-campaign-name"></h1>
         </div>
-        <div id="text-window">
-          <!--This modal is for setting the odds and is initially not displayed-->
-          <div id="odds-modal" class="odds-modal">
-            <h3 id="odds-header">Set odds of yes answer</h3>
-            <div id="odds-container">
-              <div class="odds-slider">
-              <div class="odds-value">50/50</div>
+        <div class="header-actions">
+          <span id="save-status" role="status">Saved locally</span>
+          <button class="text-button" type="button" data-action="open-help">Guide</button>
+        </div>
+      </header>
+
+      <nav class="tab-bar" aria-label="Campaign tools">
+        <button class="tab-button is-active" type="button" data-tab="oracle">Oracle</button>
+        <button class="tab-button" type="button" data-tab="scenes">Scenes <span id="scene-count" class="count"></span></button>
+        <button class="tab-button" type="button" data-tab="codex">Codex <span id="codex-count" class="count"></span></button>
+      </nav>
+
+      <section id="oracle-panel" class="panel" data-panel="oracle">
+        <div class="oracle-layout">
+          <aside class="chaos-card" aria-label="Chaos factor controls">
+            <p class="eyebrow">Chaos factor</p>
+            <div class="chaos-control">
+              <button type="button" data-action="chaos-down" aria-label="Decrease chaos factor">−</button>
+              <strong id="chaos-number">5</strong>
+              <button type="button" data-action="chaos-up" aria-label="Increase chaos factor">+</button>
             </div>
-            <div class="odds-slider">
-              <div class="odds-value">Somewhat likely</div>
+            <p id="chaos-description">Balanced uncertainty</p>
+          </aside>
+          <div class="oracle-stage">
+            <p class="eyebrow">The oracle speaks</p>
+            <div id="oracle-result" class="oracle-result" aria-live="polite">
+              <h2>Ask the story.</h2>
+              <p>Start a scene, test a yes/no question, or draw a meaning prompt.</p>
             </div>
-            <div class="odds-slider">
-              <div class="odds-value">Likely</div>
+            <div class="oracle-actions">
+              <button class="oracle-action" type="button" data-action="start-scene"><span>01</span> Start scene</button>
+              <button class="oracle-action" type="button" data-action="ask-question"><span>02</span> Fate question</button>
+              <button class="oracle-action" type="button" data-action="generate-event"><span>03</span> Meaning prompt</button>
             </div>
-            <div class="odds-slider">
-              <div class="odds-value">Very likely</div>
-            </div>
-            <div class="odds-slider">
-              <div class="odds-value">Near sure thing</div>
-            </div>
-            <div class="odds-slider">
-              <div class="odds-value">A sure thing</div>
-            </div>
-            <div class="odds-slider">
-              <div class="odds-value">Has to be</div>
-            </div>
-            <div class="odds-slider">
-              <div class="odds-value">Impossible</div>
-            </div>
-            <div class="odds-slider">
-              <div class="odds-value">Very unlikely</div>
-            </div>
-            <div class="odds-slider">
-              <div class="odds-value">Unlikely</div>
-            </div>
-             <!-- Next and previous buttons  -->
-            <button aria-label="previous odds value" class="prev" onclick="plusSlides(-1)">&#10094;</button>
-            <button aria-label="next odds value" class="next" onclick="plusSlides(1)">&#10095;</button>
-          </div>
-          <!--modal close/submit button-->
-          <div id="set-odds"><button aria-label="submit odds selection" id="set-odds-button"><i class="fas fa-check-circle"></i></button></div>
-          </div>
-          <div class="buffer"></div> 
-          <div id="text-display">        
           </div>
         </div>
-        <!--Emulator window bottom row of buttons-->
-        <div class="bottom-row">
-          <div class="fate-qs">
-            <button id="scene-btn">
-              start scene 
-            </button>
-          </div>
-          <div class="fate-qs">
-            <button id="question-btn">
-              question
-            </button>
-          </div>  
-          <div class="fate-qs">
-            <button id="event-btn">
-              Event 
-            </button>
+      </section>
+
+      <section id="scenes-panel" class="panel" data-panel="scenes" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">Campaign chronicle</p><h2>Scenes</h2><p>Capture what changed, then return to it when the thread calls.</p></div>
+          <button class="primary-button" type="button" data-action="new-scene">New scene <span aria-hidden="true">+</span></button>
+        </div>
+        <div id="scene-list" class="note-list"></div>
+      </section>
+
+      <section id="codex-panel" class="panel" data-panel="codex" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">Living reference</p><h2>Campaign codex</h2><p>Keep the people, places, promises, and dangers close at hand.</p></div>
+          <div class="segmented-control" role="group" aria-label="Codex category">
+            <button class="is-active" type="button" data-codex="characters">Characters</button>
+            <button type="button" data-codex="threads">Threads</button>
           </div>
         </div>
+        <div class="codex-toolbar"><span id="codex-empty-hint">No characters yet.</span><button class="primary-button" type="button" data-action="new-codex-note">Add character <span aria-hidden="true">+</span></button></div>
+        <div id="codex-list" class="note-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="campaign-dialog" class="dialog">
+    <form method="dialog" class="dialog-content" id="campaign-form">
+      <button class="icon-button close-dialog" type="button" data-action="close-dialog" aria-label="Close">×</button>
+      <p class="eyebrow">New campaign</p><h2>Give this story a name.</h2>
+      <label for="campaign-name">Campaign name</label>
+      <input id="campaign-name" name="campaign-name" autocomplete="off" maxlength="80" placeholder="The Ashen Crown" required>
+      <label for="campaign-summary">Opening premise <span>(optional)</span></label>
+      <textarea id="campaign-summary" name="campaign-summary" maxlength="220" placeholder="What trouble is already brewing?"></textarea>
+      <button class="primary-button" value="create" type="submit">Create campaign <span aria-hidden="true">→</span></button>
+    </form>
+  </dialog>
+
+  <dialog id="odds-dialog" class="dialog">
+    <form method="dialog" class="dialog-content compact" id="odds-form">
+      <button class="icon-button close-dialog" type="button" data-action="close-dialog" aria-label="Close">×</button>
+      <p class="eyebrow">Fate question</p><h2>How likely is a yes?</h2>
+      <label for="odds-select">Odds</label>
+      <select id="odds-select"><option value="Certain">Certain</option><option value="Nearly Certain">Nearly certain</option><option value="Very Likely">Very likely</option><option value="Likely">Likely</option><option value="50/50" selected>50/50</option><option value="Unlikely">Unlikely</option><option value="Very Unlikely">Very unlikely</option><option value="Nearly Impossible">Nearly impossible</option><option value="Impossible">Impossible</option></select>
+      <button class="primary-button" value="roll" type="submit">Consult the oracle <span aria-hidden="true">→</span></button>
+    </form>
+  </dialog>
+
+  <dialog id="note-dialog" class="dialog note-dialog">
+    <form method="dialog" class="dialog-content editor-dialog" id="note-form">
+      <button class="icon-button close-dialog" type="button" data-action="close-dialog" aria-label="Close">×</button>
+      <p id="note-kind" class="eyebrow">Scene note</p>
+      <label for="note-title">Title</label>
+      <input id="note-title" autocomplete="off" maxlength="100" placeholder="Name this note" required>
+      <div class="editor-label"><span>Notes</span><span>Formatting is saved with this campaign</span></div>
+      <div class="editor-toolbar" aria-label="Text formatting">
+        <button type="button" data-format="bold" aria-label="Bold"><strong>B</strong></button>
+        <button type="button" data-format="italic" aria-label="Italic"><em>I</em></button>
+        <button type="button" data-format="formatBlock" data-value="h3" aria-label="Heading">H</button>
+        <button type="button" data-format="insertUnorderedList" aria-label="Bulleted list">•</button>
+        <button type="button" data-format="insertOrderedList" aria-label="Numbered list">1.</button>
+        <button type="button" data-format="removeFormat" aria-label="Clear formatting">Tx</button>
       </div>
-      <!--journal-->
-      <div id="journal" class="tabcontent">
-        <div id="scene-window"> <!--where the scene tabs will be displayed-->
-        </div>
-        <div id="scene-bottom-row" class="bottom-row">
-          <div class="fate-qs">
-            <button id="add-scene-btn">
-              Add scene
-            </button>
-          </div>
-        </div>
-      </div>
-      <!--lists-->
-      <div id="list" class="tabcontent">
-        <div id="list-container"> <!--display for list items-->
-          <div id="characters" ><!--characters lists-->
-            <h2 class="header">characters & groups</h2>
-            <input id="char-input" type="text" placeholder="Add character...">
-            <button aria-label="add character or group" id="character-btn" class="addBtn"><i class="fas fa-plus-circle"></i></button>
-            <ul id="char-ul">
-            </ul>
-          </div>
-          <div id="threads"><!--threads lists-->
-            <h2 class="header">Threads</h2>
-            <input id="thread-input" type="text" placeholder="Add thread.." required>
-            <button aria-label="add thread" id="thread-btn" class="addBtn"><i class="fas fa-plus-circle"></i></button>
-            <ul id="thread-ul">
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!--footer-->
-  <footer>
-    <div id="footer">
-      <a href="https://www.buymeacoffee.com/niuwebdev9" target="_blank" rel="noopener" aria-label="buy me a coffee - opens in a new tab">
-        <i class="fas fa-mug-hot"></i>
-      </a>
-    </div>
-  </footer>
+      <div id="rich-editor" class="rich-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Write the details that matter..."></div>
+      <div class="editor-actions"><button class="danger-button" type="button" data-action="delete-note">Delete</button><button class="primary-button" value="save" type="submit">Save note <span aria-hidden="true">→</span></button></div>
+    </form>
+  </dialog>
+
+  <dialog id="help-dialog" class="dialog"><div class="dialog-content compact"><button class="icon-button close-dialog" type="button" data-action="close-dialog" aria-label="Close">×</button><p class="eyebrow">A quick guide</p><h2>Keep play moving.</h2><div class="help-copy"><p><strong>Oracle</strong> resolves uncertain moments. Chaos shapes how wild the result can be.</p><p><strong>Scenes</strong> are your session chronicle. Start a scene in the Oracle, then save the details you want to keep.</p><p><strong>Codex</strong> keeps characters and open threads in the same campaign, ready when an event brings them forward.</p></div></div></dialog>
   <script src="assets/js/script.js"></script>
 </body>
 </html>
