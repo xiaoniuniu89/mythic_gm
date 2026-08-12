@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { collection, deleteDoc, doc, getDocs, getFirestore, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const eventAction = ["Attainment","Starting","Neglect","Fight","Recruit","Triumph","Communicate","Oppose","Inquire","Move","Release","Befriend","Judge","Separate","Take","Break","Heal","Delay","Return","Expose","Travel","Block","Harm","Create","Betray","Agree","Inspect","Ambush","Spy","Open","Ruin","Arrive","Propose","Divide","Trust","Assist","Care","Transform","Change"];
 const eventSubject = ["Goals","Dreams","Environment","Allies","Enemies","Emotions","Opposition","Messages","Tension","Friendship","A project","Plans","News","A plot","Illness","Success","Travel","Jealousy","Home","Power","Intrigues","Fears","Rumor","Magic","Illusions","Danger","Weather","Nature","Leadership","Information"];
@@ -37,6 +37,11 @@ async function loadCampaigns() {
   state.campaigns = snapshot.docs.map((item) => ({ ...item.data(), id: item.id, scenes: item.data().scenes || [], characters: item.data().characters || [], threads: item.data().threads || [], chaos: item.data().chaos || 5 }));
   setSaveStatus("Saved privately");
   renderCampaignList();
+}
+
+async function isInvited(user) {
+  const invitation = await getDoc(doc(db, "allowedUsers", user.uid));
+  return invitation.exists();
 }
 
 async function saveCampaign(campaign) {
@@ -102,9 +107,16 @@ async function initialise() {
     const app = initializeApp(config); auth = getAuth(app); db = getFirestore(app);
     onAuthStateChanged(auth, async (user) => {
       state.user = user;
-      if (!user) { $(".app-shell").hidden = true; $("#auth-gate").hidden = false; setAuthStatus("Sign in with the Google account that owns your campaigns."); return; }
-      $("#auth-gate").hidden = true; $(".app-shell").hidden = false; $("#account-name").textContent = user.email || "Signed in";
-      try { await loadCampaigns(); openHome(); } catch (error) { console.error(error); setAuthStatus("Campaigns could not be loaded. Check your Firestore rules."); }
+      if (!user) { $(".app-shell").hidden = true; $("#auth-gate").hidden = false; $("#auth-sign-in").hidden = false; $("#auth-sign-out").hidden = true; setAuthStatus("Sign in with an invited Google account."); return; }
+      try {
+        if (!await isInvited(user)) {
+          $(".app-shell").hidden = true; $("#auth-gate").hidden = false; $("#auth-sign-in").hidden = true; $("#auth-sign-out").hidden = false;
+          setAuthStatus(`${user.email || "This account"} has not been invited. Ask the campaign owner for access.`);
+          return;
+        }
+        $("#auth-gate").hidden = true; $(".app-shell").hidden = false; $("#account-name").textContent = user.email || "Signed in";
+        await loadCampaigns(); openHome();
+      } catch (error) { console.error(error); $(".app-shell").hidden = true; $("#auth-gate").hidden = false; setAuthStatus("Access could not be confirmed. Check the Firestore invite rules."); }
     });
   } catch (error) { console.error(error); setAuthStatus(`${error.message} Check the Vercel environment variables, then redeploy.`); }
 }

@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isInvited(userId) {
+      return request.auth != null
+        && request.auth.uid == userId
+        && exists(/databases/$(database)/documents/allowedUsers/$(userId));
+    }
+
+    match /users/{userId}/{document=**} {
+      allow read, write: if isInvited(userId);
+    }
+
+    match /allowedUsers/{userId} {
+      allow get: if request.auth != null && request.auth.uid == userId;
+      allow list, create, update, delete: if false;
+    }
+  }
+}
