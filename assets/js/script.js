@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const eventAction = ["Attainment","Starting","Neglect","Fight","Recruit","Triumph","Communicate","Oppose","Inquire","Move","Release","Befriend","Judge","Separate","Take","Break","Heal","Delay","Return","Expose","Travel","Block","Harm","Create","Betray","Agree","Inspect","Ambush","Spy","Open","Ruin","Arrive","Propose","Divide","Trust","Assist","Care","Transform","Change"];
@@ -41,7 +41,7 @@ async function loadCampaigns() {
 
 async function isInvited(user) {
   if (!user.email) return false;
-  const invitation = await getDoc(doc(db, "allowedEmails", user.email));
+  const invitation = await getDoc(doc(db, "allowedEmails", user.email.toLowerCase().trim()));
   return invitation.exists();
 }
 
@@ -94,8 +94,25 @@ document.addEventListener("click", (event) => {
   if (button.dataset.codex) { state.codexType = button.dataset.codex; document.querySelectorAll("[data-codex]").forEach((item) => item.classList.toggle("is-active", item === button)); renderCodex(); return; }
   if (button.dataset.format) { document.execCommand(button.dataset.format, false, button.dataset.value || null); $("#rich-editor").focus(); return; }
   if (!action) return;
-  if (action === "sign-in") signInWithRedirect(auth, new GoogleAuthProvider()); if (action === "sign-out") signOut(auth); if (action === "new-campaign") $("#campaign-dialog").showModal(); if (action === "return-home") openHome(); if (action === "open-help") $("#help-dialog").showModal(); if (action === "close-dialog") button.closest("dialog").close(); if (action === "chaos-up") adjustChaos(1); if (action === "chaos-down") adjustChaos(-1); if (action === "start-scene") startScene(); if (action === "ask-question") $("#odds-dialog").showModal(); if (action === "generate-event") eventPrompt(); if (action === "new-scene") openNote("scene"); if (action === "new-codex-note") openNote(state.codexType); if (action === "edit-note") openNote(button.dataset.type, button.dataset.note); if (action === "delete-note") deleteNote();
+  if (action === "sign-in") handleSignIn(); if (action === "sign-out") signOut(auth); if (action === "new-campaign") $("#campaign-dialog").showModal(); if (action === "return-home") openHome(); if (action === "open-help") $("#help-dialog").showModal(); if (action === "close-dialog") button.closest("dialog").close(); if (action === "chaos-up") adjustChaos(1); if (action === "chaos-down") adjustChaos(-1); if (action === "start-scene") startScene(); if (action === "ask-question") $("#odds-dialog").showModal(); if (action === "generate-event") eventPrompt(); if (action === "new-scene") openNote("scene"); if (action === "new-codex-note") openNote(state.codexType); if (action === "edit-note") openNote(button.dataset.type, button.dataset.note); if (action === "delete-note") deleteNote();
 });
+
+async function handleSignIn() {
+  setAuthStatus("Signing in…");
+  const provider = new GoogleAuthProvider();
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Popup sign-in error:", error);
+    if (error.code === "auth/popup-blocked") {
+      setAuthStatus("Popup blocked by browser. Retrying with redirect…");
+      await signInWithRedirect(auth, provider);
+    } else {
+      $("#auth-sign-in").hidden = false;
+      setAuthStatus(`Sign-in error (${error.code || "error"}): ${error.message}`);
+    }
+  }
+}
 $("#campaign-form").addEventListener("submit", async (event) => { event.preventDefault(); const name = $("#campaign-name").value.trim(); if (!name) return; const campaign = blankCampaign(name, $("#campaign-summary").value.trim()); state.campaigns.push(campaign); await saveCampaign(campaign); event.currentTarget.reset(); $("#campaign-dialog").close(); openWorkspace(campaign.id); });
 $("#odds-form").addEventListener("submit", (event) => { event.preventDefault(); fateRoll($("#odds-select").value); $("#odds-dialog").close(); });
 $("#note-form").addEventListener("submit", (event) => { event.preventDefault(); saveNote(); });
@@ -106,10 +123,17 @@ async function initialise() {
     if (!response.ok) throw new Error("Firebase configuration is unavailable.");
     const config = await response.json(); if (!config.apiKey || !config.projectId) throw new Error("Firebase environment variables are incomplete.");
     const app = initializeApp(config); auth = getAuth(app); db = getFirestore(app);
+
+    getRedirectResult(auth).catch((error) => {
+      console.error("Redirect sign-in error:", error);
+      setAuthStatus(`Redirect error (${error.code || "error"}): ${error.message}`);
+    });
+
     onAuthStateChanged(auth, async (user) => {
       state.user = user;
       if (!user) { $(".app-shell").hidden = true; $("#auth-gate").hidden = false; $("#auth-sign-in").hidden = false; $("#auth-sign-out").hidden = true; setAuthStatus("Sign in with an invited Google account."); return; }
       try {
+        setAuthStatus("Verifying invitation…");
         if (!await isInvited(user)) {
           $(".app-shell").hidden = true; $("#auth-gate").hidden = false; $("#auth-sign-in").hidden = true; $("#auth-sign-out").hidden = false;
           setAuthStatus(`${user.email || "This account"} has not been invited. Ask the campaign owner for access.`);
@@ -117,7 +141,11 @@ async function initialise() {
         }
         $("#auth-gate").hidden = true; $(".app-shell").hidden = false; $("#account-name").textContent = user.email || "Signed in";
         await loadCampaigns(); openHome();
-      } catch (error) { console.error(error); $(".app-shell").hidden = true; $("#auth-gate").hidden = false; setAuthStatus("Access could not be confirmed. Check the Firestore invite rules."); }
+      } catch (error) {
+        console.error("Auth / Firestore error:", error);
+        $(".app-shell").hidden = true; $("#auth-gate").hidden = false; $("#auth-sign-in").hidden = false;
+        setAuthStatus(`Access error (${error.code || "error"}): ${error.message || "Check Firestore rules or invitation."}`);
+      }
     });
   } catch (error) { console.error(error); setAuthStatus(`${error.message} Check the Vercel environment variables, then redeploy.`); }
 }

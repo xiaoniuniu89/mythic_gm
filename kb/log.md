@@ -17,3 +17,10 @@ Chronological record of all updates, ingests, and compilations in this developer
 - **Created Technical Design Pages:**
   - Created [[app-architecture]] — SPA layout, persistence details, and logic bugs identified.
   - Created [[ai-oracle-prompting]] — Prompting specifications and output schemas.
+
+## [2026-08-12 16:49] fix | Resolved Firebase Auth Redirect Loop & Invitation Casing
+- **Fixed Redirect Loop:** Switched from `signInWithRedirect` to `signInWithPopup` with popup-blocker redirect fallback, resolving modern browser third-party cookie blocking issues.
+- **Added Redirect Diagnostics:** Added `getRedirectResult(auth)` handling to capture and report auth redirect errors.
+- **Normalized Email Lookup:** Trimmed and lowercased email in `isInvited()` to match Firestore `allowedEmails` IDs.
+- **Enhanced Status Messaging:** Surfaced precise Firebase Auth and Firestore error codes in `#auth-status` UI.
+
