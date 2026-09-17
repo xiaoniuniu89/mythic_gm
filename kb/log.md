@@ -24,8 +24,9 @@ Chronological record of all updates, ingests, and compilations in this developer
   - Added an integrated `#item-modal` dialog providing generous typing space with a title field and large textarea.
   - Enabled editing by clicking existing cards, with direct delete buttons on cards and modal.
   - Maintained synchronization with `npcArray` and `threadArray` so Oracle event focus generation continues seamlessly.
-- **Background Flash Fix:**
-  - Sampled exact parchment color (`#a37e57`) and applied it to `html` and `body` inline and in CSS to eliminate the white screen flash on load before `background.jpg` finishes loading.
+- **Background Flash Fix & Fade-In:**
+  - Sampled exact parchment color (`#a37e57`) and applied it to `html` to eliminate the white screen flash on load.
+  - Implemented `#bg-overlay` with image preloading and CSS opacity transition (`0.8s ease-in-out`) for a cinematic fade-in when `background.jpg` finishes loading.
   - Corrected how-to modal close handler to reset body background to stylesheet default instead of `"initial"`.
 - **Responsiveness Overhaul:**
   - Enhanced layout across desktop, tablet (`<= 870px`), mobile (`<= 700px`, `<= 500px`, `<= 375px`), and landscape mode.

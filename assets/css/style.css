@@ -6,11 +6,24 @@
 
 html {
   background-color: #a37e57;
-  background-image: url('../images/background.jpg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
+}
+
+#bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../images/background.jpg') no-repeat center center;
   background-size: cover;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+#bg-overlay.loaded {
+  opacity: 1;
 }
 
 li {
@@ -20,6 +33,7 @@ li {
 body {
   font-family: 'Raleway', sans-serif;
   background: transparent;
+  min-height: 100vh;
 }
 
 

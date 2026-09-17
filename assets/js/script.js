@@ -753,3 +753,19 @@ document.addEventListener('keydown', function(e) {
 renderScenes();
 renderCharacters();
 renderThreads();
+
+// Smooth background image fade-in transition
+(function initBackgroundFade() {
+  var bgOverlay = document.getElementById('bg-overlay');
+  if (!bgOverlay) return;
+
+  var bgImg = new Image();
+  bgImg.src = 'assets/images/background.jpg';
+  bgImg.onload = function() {
+    bgOverlay.classList.add('loaded');
+  };
+  if (bgImg.complete) {
+    bgOverlay.classList.add('loaded');
+  }
+})();
+
