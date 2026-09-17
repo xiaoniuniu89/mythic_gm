@@ -51,7 +51,7 @@ howToBtn.onclick = function() {
 //close how to modal
 closeHowTo.onclick = function() {
   howToModal.style.display = "none";
-  document.body.style.backgroundColor = "initial";
+  document.body.style.backgroundColor = "";
 };
 
 // Tabs
@@ -338,155 +338,418 @@ eventButton.onclick = function(){
   displayBox.innerHTML = `<h3 class = 'word'>${action}</h3><h3 class = 'word'>${subject}</h3>`;
 };
 
-//scene tab script 
+// State management for scenes, characters, and threads
+let scenes = [];
+let characters = [];
+let threads = [];
 
-let addSceneButton = document.getElementById('add-scene-btn');
+let npcArray = []; // values used by oracle tab for random event generation
+let threadArray = []; // values used by oracle tab for random event generation
+
+// DOM Elements
 let sceneWindow = document.getElementById('scene-window');
+let addSceneButton = document.getElementById('add-scene-btn');
+let addCharBtn = document.getElementById('add-char-btn');
+let addThreadBtn = document.getElementById('add-thread-btn');
+let charCardsContainer = document.getElementById('char-cards');
+let threadCardsContainer = document.getElementById('thread-cards');
 
-//create new scene div
-addSceneButton.onclick = function() {
-  addScene();
+let itemModal = document.getElementById('item-modal');
+let itemModalBackdrop = document.getElementById('item-modal-backdrop');
+let closeItemModalBtn = document.getElementById('close-item-modal');
+let cancelItemModalBtn = document.getElementById('cancel-item-modal');
+let saveItemModalBtn = document.getElementById('save-item-modal');
+let itemModalDeleteBtn = document.getElementById('item-modal-delete-btn');
+let itemModalTitle = document.getElementById('item-modal-title');
+let itemNameLabel = document.getElementById('item-name-label');
+let itemNameInput = document.getElementById('item-name-input');
+let itemTextLabel = document.getElementById('item-text-label');
+let itemTextInput = document.getElementById('item-text-input');
+
+// Active item tracking for modal
+let activeModalItem = {
+  type: null, // 'scene' | 'character' | 'thread'
+  id: null
 };
 
-// this function creates a simple div that the user can input text into. It is scrollable as is the display window to accomadate for many divs being added.
-function addScene() {
-  var inputOne = document.createElement('input'); // for the title of the div
-  inputOne.setAttribute("type", "text");
-  inputOne.setAttribute("placeholder", "scene#" );
-  inputOne.setAttribute("maxlength", "15");
-  inputOne.setAttribute("size", "5");
-  var inputTwo = document.createElement('textarea'); // for the main text body of the div
-  inputTwo.setAttribute("placeholder", "scene text ..." );
-  var scene = document.createElement('div');
-  scene.className = ('scene-box');
-  scene.appendChild(inputOne);
-  scene.appendChild(inputTwo);
-  var span = document.createElement("span");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "scene-close";
-  span.appendChild(txt);
-  scene.appendChild(span);
-  sceneWindow.appendChild(scene);
-  // to delete the div
-  for (i = 0; i < sceneCloseBtn.length; i++) {
-    sceneCloseBtn[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    };
-  }
+// Sync npcArray and threadArray with current character and thread names for the Oracle
+function syncOracleArrays() {
+  npcArray = characters.map(function(c) { return c.name; });
+  threadArray = threads.map(function(t) { return t.title; });
 }
-// close the scene div
-let sceneCloseBtn = document.getElementsByClassName('scene-close');
-var i;
-for (i = 0; i < sceneCloseBtn.length; i++) {
-  sceneCloseBtn[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
+
+// Open modal for creating or editing an item
+function openItemModal(type, id) {
+  if (id === undefined) id = null;
+  activeModalItem.type = type;
+  activeModalItem.id = id;
+
+  itemNameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+
+  if (id === null) {
+    // Create Mode
+    itemModalDeleteBtn.style.display = 'none';
+    if (type === 'scene') {
+      itemModalTitle.textContent = 'Add Scene';
+      itemNameLabel.textContent = 'Scene Title / Number';
+      itemNameInput.placeholder = 'e.g. Scene ' + (scenes.length + 1) + ' - The Hidden Tomb';
+      itemNameInput.value = 'Scene ' + (scenes.length + 1);
+      itemTextLabel.textContent = 'Scene Narrative & Notes';
+      itemTextInput.placeholder = 'Describe the scene setup, what happens, oracle answers, action notes...';
+      itemTextInput.value = '';
+    } else if (type === 'character') {
+      itemModalTitle.textContent = 'Add Character / Group';
+      itemNameLabel.textContent = 'Character or Group Name';
+      itemNameInput.placeholder = 'e.g. Brom the Ranger, Town Guard';
+      itemNameInput.value = '';
+      itemTextLabel.textContent = 'Description & Notes (optional)';
+      itemTextInput.placeholder = 'Role, personality, motives, equipment, status...';
+      itemTextInput.value = '';
+    } else if (type === 'thread') {
+      itemModalTitle.textContent = 'Add Thread';
+      itemNameLabel.textContent = 'Thread / Goal';
+      itemNameInput.placeholder = 'e.g. Find the Lost Amulet, Escape the Castle';
+      itemNameInput.value = '';
+      itemTextLabel.textContent = 'Details, Clues & Stakes (optional)';
+      itemTextInput.placeholder = 'Objectives, known clues, danger, next steps...';
+      itemTextInput.value = '';
+    }
+  } else {
+    // Edit Mode
+    itemModalDeleteBtn.style.display = 'inline-block';
+    if (type === 'scene') {
+      var scene = scenes.find(function(s) { return s.id === id; });
+      if (!scene) return;
+      itemModalTitle.textContent = 'Edit Scene';
+      itemNameLabel.textContent = 'Scene Title / Number';
+      itemNameInput.placeholder = 'Scene Title / Number...';
+      itemNameInput.value = scene.title;
+      itemTextLabel.textContent = 'Scene Narrative & Notes';
+      itemTextInput.placeholder = 'Scene narrative & notes...';
+      itemTextInput.value = scene.text;
+    } else if (type === 'character') {
+      var char = characters.find(function(c) { return c.id === id; });
+      if (!char) return;
+      itemModalTitle.textContent = 'Edit Character / Group';
+      itemNameLabel.textContent = 'Character or Group Name';
+      itemNameInput.placeholder = 'Character Name...';
+      itemNameInput.value = char.name;
+      itemTextLabel.textContent = 'Description & Notes';
+      itemTextInput.placeholder = 'Description & notes...';
+      itemTextInput.value = char.notes;
+    } else if (type === 'thread') {
+      var thread = threads.find(function(t) { return t.id === id; });
+      if (!thread) return;
+      itemModalTitle.textContent = 'Edit Thread';
+      itemNameLabel.textContent = 'Thread / Goal';
+      itemNameInput.placeholder = 'Thread Title...';
+      itemNameInput.value = thread.title;
+      itemTextLabel.textContent = 'Details, Clues & Stakes';
+      itemTextInput.placeholder = 'Details, clues & stakes...';
+      itemTextInput.value = thread.notes;
+    }
+  }
+
+  itemModal.style.display = 'flex';
+  setTimeout(function() {
+    itemNameInput.focus();
+  }, 60);
+}
+
+// Close modal
+function closeItemModal() {
+  itemModal.style.display = 'none';
+  activeModalItem.type = null;
+  activeModalItem.id = null;
+}
+
+// Save modal changes (create or update)
+function saveItemModal() {
+  var nameVal = itemNameInput.value.trim();
+  var textVal = itemTextInput.value.trim();
+
+  if (!nameVal) {
+    itemNameInput.style.borderColor = '#ff6b6b';
+    itemNameInput.focus();
+    return;
+  }
+
+  var type = activeModalItem.type;
+  var id = activeModalItem.id;
+
+  if (type === 'scene') {
+    if (id === null) {
+      scenes.push({ id: Date.now(), title: nameVal, text: textVal });
+    } else {
+      var scene = scenes.find(function(s) { return s.id === id; });
+      if (scene) {
+        scene.title = nameVal;
+        scene.text = textVal;
+      }
+    }
+    renderScenes();
+  } else if (type === 'character') {
+    if (id === null) {
+      characters.push({ id: Date.now(), name: nameVal, notes: textVal });
+    } else {
+      var char = characters.find(function(c) { return c.id === id; });
+      if (char) {
+        char.name = nameVal;
+        char.notes = textVal;
+      }
+    }
+    syncOracleArrays();
+    renderCharacters();
+  } else if (type === 'thread') {
+    if (id === null) {
+      threads.push({ id: Date.now(), title: nameVal, notes: textVal });
+    } else {
+      var thread = threads.find(function(t) { return t.id === id; });
+      if (thread) {
+        thread.title = nameVal;
+        thread.notes = textVal;
+      }
+    }
+    syncOracleArrays();
+    renderThreads();
+  }
+
+  closeItemModal();
+}
+
+// Delete item from modal
+function deleteItemModal() {
+  var type = activeModalItem.type;
+  var id = activeModalItem.id;
+  if (id === null) return;
+
+  if (type === 'scene') {
+    scenes = scenes.filter(function(s) { return s.id !== id; });
+    renderScenes();
+  } else if (type === 'character') {
+    characters = characters.filter(function(c) { return c.id !== id; });
+    syncOracleArrays();
+    renderCharacters();
+  } else if (type === 'thread') {
+    threads = threads.filter(function(t) { return t.id !== id; });
+    syncOracleArrays();
+    renderThreads();
+  }
+
+  closeItemModal();
+}
+
+// Render scenes into #scene-window
+function renderScenes() {
+  if (!sceneWindow) return;
+  sceneWindow.innerHTML = '';
+  if (scenes.length === 0) {
+    var emptyMsg = document.createElement('p');
+    emptyMsg.className = 'empty-list-msg';
+    emptyMsg.textContent = 'No scenes recorded yet. Click "Add scene" below to begin.';
+    sceneWindow.appendChild(emptyMsg);
+    return;
+  }
+
+  scenes.forEach(function(scene) {
+    var card = document.createElement('div');
+    card.className = 'scene-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+
+    var header = document.createElement('div');
+    header.className = 'scene-card-header';
+
+    var title = document.createElement('h4');
+    title.className = 'scene-card-title';
+    title.textContent = scene.title || 'Untitled Scene';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'card-close-btn';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Delete scene');
+    closeBtn.onclick = function(e) {
+      e.stopPropagation();
+      scenes = scenes.filter(function(s) { return s.id !== scene.id; });
+      renderScenes();
+    };
+
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+
+    var body = document.createElement('div');
+    body.className = 'scene-card-body' + (scene.text ? '' : ' empty');
+    body.textContent = scene.text || 'Click to add scene narrative & notes...';
+
+    var footer = document.createElement('div');
+    footer.className = 'scene-card-footer';
+    footer.innerHTML = '<i class="fas fa-pencil-alt"></i> Click to edit';
+
+    card.appendChild(header);
+    card.appendChild(body);
+    card.appendChild(footer);
+
+    card.onclick = function() {
+      openItemModal('scene', scene.id);
+    };
+
+    sceneWindow.appendChild(card);
+  });
+}
+
+// Render characters into #char-cards
+function renderCharacters() {
+  if (!charCardsContainer) return;
+  charCardsContainer.innerHTML = '';
+  if (characters.length === 0) {
+    var emptyMsg = document.createElement('p');
+    emptyMsg.className = 'empty-list-msg';
+    emptyMsg.textContent = 'No characters added yet. Click "+ Add Character" above.';
+    charCardsContainer.appendChild(emptyMsg);
+    return;
+  }
+
+  characters.forEach(function(char) {
+    var card = document.createElement('div');
+    card.className = 'item-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+
+    var header = document.createElement('div');
+    header.className = 'item-card-header';
+
+    var title = document.createElement('h4');
+    title.className = 'item-card-title';
+    title.textContent = char.name;
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'card-close-btn';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Delete character');
+    closeBtn.onclick = function(e) {
+      e.stopPropagation();
+      characters = characters.filter(function(c) { return c.id !== char.id; });
+      syncOracleArrays();
+      renderCharacters();
+    };
+
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+
+    var body = document.createElement('div');
+    body.className = 'item-card-body' + (char.notes ? '' : ' empty');
+    body.textContent = char.notes || 'Click to view or add notes...';
+
+    card.appendChild(header);
+    card.appendChild(body);
+
+    card.onclick = function() {
+      openItemModal('character', char.id);
+    };
+
+    charCardsContainer.appendChild(card);
+  });
+}
+
+// Render threads into #thread-cards
+function renderThreads() {
+  if (!threadCardsContainer) return;
+  threadCardsContainer.innerHTML = '';
+  if (threads.length === 0) {
+    var emptyMsg = document.createElement('p');
+    emptyMsg.className = 'empty-list-msg';
+    emptyMsg.textContent = 'No threads added yet. Click "+ Add Thread" above.';
+    threadCardsContainer.appendChild(emptyMsg);
+    return;
+  }
+
+  threads.forEach(function(thread) {
+    var card = document.createElement('div');
+    card.className = 'item-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+
+    var header = document.createElement('div');
+    header.className = 'item-card-header';
+
+    var title = document.createElement('h4');
+    title.className = 'item-card-title';
+    title.textContent = thread.title;
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'card-close-btn';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Delete thread');
+    closeBtn.onclick = function(e) {
+      e.stopPropagation();
+      threads = threads.filter(function(t) { return t.id !== thread.id; });
+      syncOracleArrays();
+      renderThreads();
+    };
+
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+
+    var body = document.createElement('div');
+    body.className = 'item-card-body' + (thread.notes ? '' : ' empty');
+    body.textContent = thread.notes || 'Click to view or add notes...';
+
+    card.appendChild(header);
+    card.appendChild(body);
+
+    card.onclick = function() {
+      openItemModal('thread', thread.id);
+    };
+
+    threadCardsContainer.appendChild(card);
+  });
+}
+
+// Event Listeners for Buttons
+if (addSceneButton) {
+  addSceneButton.onclick = function() {
+    openItemModal('scene', null);
   };
 }
 
-/*list tab script - help from this tutorial - https://www.w3schools.com/howto/howto_js_todolist.asp
-list tab essentially contains two "to do" style lists. one for characters and one for threads.*/
-
-// close button for list items
-let closeList = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < closeList.length; i++) {
-  closeList[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
+if (addCharBtn) {
+  addCharBtn.onclick = function() {
+    openItemModal('character', null);
   };
 }
 
-// add to the character list
-//click
-let charAddBtn = document.getElementById("character-btn");
-charAddBtn.addEventListener("click", addChar);
-//on enter
-document.getElementById("char-input").addEventListener("keydown", function(event){
-  if(event.key === "Enter"){
-    addChar();
+if (addThreadBtn) {
+  addThreadBtn.onclick = function() {
+    openItemModal('thread', null);
+  };
+}
+
+if (closeItemModalBtn) closeItemModalBtn.onclick = closeItemModal;
+if (cancelItemModalBtn) cancelItemModalBtn.onclick = closeItemModal;
+if (itemModalBackdrop) itemModalBackdrop.onclick = closeItemModal;
+if (itemModalDeleteBtn) itemModalDeleteBtn.onclick = deleteItemModal;
+
+var itemModalForm = document.getElementById('item-modal-form');
+if (itemModalForm) {
+  itemModalForm.onsubmit = function(e) {
+    e.preventDefault();
+    saveItemModal();
+    return false;
+  };
+}
+
+// Global Keyboard Shortcuts (Escape to close, Ctrl/Cmd+Enter to save)
+document.addEventListener('keydown', function(e) {
+  if (itemModal && itemModal.style.display === 'flex') {
+    if (e.key === 'Escape') {
+      closeItemModal();
+    } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      saveItemModal();
+    }
   }
 });
 
-let npcArray = []; //values typed in by user get stored in an array to be used by oracle tab
-// this will add the input from the user to the character/group list
-function addChar() {
-  var li = document.createElement("LI");
-  var inputValue = document.getElementById("char-input").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue.match(/[0-9a-zA-z]/g)) { // input validation
-    npcArray.push(inputValue);
-    document.getElementById("char-ul").appendChild(li);
-  } else {
-    alert("You must write something!");
-  }
-  document.getElementById("char-input").value = "";
-  // add close button to input 
-  var span = document.createElement("span");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
-  // delete list and from array 
-  for (i = 0; i < closeList.length; i++) {
-    closeList[i].onclick = function() {
-      var div = this.parentElement;
-      var value = this.parentElement.firstChild.textContent; 
-      var index = npcArray.indexOf(value);
-      npcArray.splice(index, 1);
-      div.style.display = "none";
-    };
-  }
-}
-
-
-
-// add to the thread list 
-//click
-let threadAddBtn = document.getElementById("thread-btn");
-threadAddBtn.addEventListener("click", addThread);
-// on enter 
-document.getElementById("thread-input").addEventListener("keydown", function(event){
-  if(event.key === "Enter"){
-    addThread();
-  }
-});
-
-//user input stored in array to be used in oracle tab
-let threadArray = [];
-//this function will add the user input to a list to be displayed in emulator window
-function addThread() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("thread-input").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t); 
-  if (inputValue.match(/[0-9a-zA-z]/g)) { //input validation
-    threadArray.push(inputValue); //add to array
-    document.getElementById("thread-ul").appendChild(li);
-  } else {
-    alert("You must write something!");
-  }
-  document.getElementById("thread-input").value = "";
-  // close button
-  var span = document.createElement("span");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
-  // delete list and remove value from array 
-  for (i = 0; i < closeList.length; i++) {
-    closeList[i].onclick = function() {
-      var div = this.parentElement;
-      var value = this.parentElement.firstChild.textContent;
-      var index = threadArray.indexOf(value);
-      threadArray.splice(index, 1);
-      div.style.display = "none";
-    };
-  }
-}
-
-
-
-
+// Initial renders on script load
+renderScenes();
+renderCharacters();
+renderThreads();

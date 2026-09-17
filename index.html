@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: #a37e57;">
 <head>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
-<body>
+<body style="background-color: #a37e57;">
   <section>
     <h1 id="logo">Mythic GM</h1>
   <!--How to use section contained in modal-->
@@ -187,24 +187,59 @@
       <!--lists-->
       <div id="list" class="tabcontent">
         <div id="list-container"> <!--display for list items-->
-          <div id="characters" ><!--characters lists-->
-            <h2 class="header">characters & groups</h2>
-            <input id="char-input" type="text" placeholder="Add character...">
-            <button aria-label="add character or group" id="character-btn" class="addBtn"><i class="fas fa-plus-circle"></i></button>
-            <ul id="char-ul">
-            </ul>
+          <div id="characters"><!--characters lists-->
+            <div class="list-section-header">
+              <h2 class="header">characters & groups</h2>
+              <button aria-label="add character or group" id="add-char-btn" class="item-add-btn">
+                <i class="fas fa-plus-circle"></i> Add Character
+              </button>
+            </div>
+            <div id="char-cards" class="cards-list">
+            </div>
           </div>
           <div id="threads"><!--threads lists-->
-            <h2 class="header">Threads</h2>
-            <input id="thread-input" type="text" placeholder="Add thread.." required>
-            <button aria-label="add thread" id="thread-btn" class="addBtn"><i class="fas fa-plus-circle"></i></button>
-            <ul id="thread-ul">
-            </ul>
+            <div class="list-section-header">
+              <h2 class="header">Threads</h2>
+              <button aria-label="add thread" id="add-thread-btn" class="item-add-btn">
+                <i class="fas fa-plus-circle"></i> Add Thread
+              </button>
+            </div>
+            <div id="thread-cards" class="cards-list">
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Item Detail Modal for Scenes, Characters, and Threads -->
+  <div id="item-modal" class="item-modal" style="display: none;">
+    <div class="item-modal-backdrop" id="item-modal-backdrop"></div>
+    <div class="item-modal-content" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
+      <div class="item-modal-header">
+        <h3 id="item-modal-title">Add Scene</h3>
+        <button aria-label="close modal" id="close-item-modal" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="item-modal-form" onsubmit="return false;">
+        <div class="form-group">
+          <label id="item-name-label" for="item-name-input">Title</label>
+          <input type="text" id="item-name-input" class="modal-input" autocomplete="off" placeholder="Title...">
+        </div>
+        <div class="form-group">
+          <label id="item-text-label" for="item-text-input">Narrative & Notes</label>
+          <textarea id="item-text-input" class="modal-textarea" rows="8" placeholder="Enter notes or text..."></textarea>
+        </div>
+        <div class="item-modal-footer">
+          <button type="button" id="item-modal-delete-btn" class="modal-btn delete-btn" style="display: none;">Delete</button>
+          <div class="modal-footer-actions">
+            <button type="button" id="cancel-item-modal" class="modal-btn cancel-btn">Cancel</button>
+            <button type="submit" id="save-item-modal" class="modal-btn save-btn">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!--footer-->
   <footer>
     <div id="footer">

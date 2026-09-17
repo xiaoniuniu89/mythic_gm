@@ -17,3 +17,18 @@ Chronological record of all updates, ingests, and compilations in this developer
 - **Created Technical Design Pages:**
   - Created [[app-architecture]] — SPA layout, persistence details, and logic bugs identified.
   - Created [[ai-oracle-prompting]] — Prompting specifications and output schemas.
+
+## [2026-09-17 20:45] ui & ux upgrade | Scene/Character/Thread Cards, Modals, FOUC Fix & Responsiveness
+- **Card UI & Modal Editing:**
+  - Replaced cramped inline textboxes with dedicated interactive cards for Scenes, Characters, and Threads.
+  - Added an integrated `#item-modal` dialog providing generous typing space with a title field and large textarea.
+  - Enabled editing by clicking existing cards, with direct delete buttons on cards and modal.
+  - Maintained synchronization with `npcArray` and `threadArray` so Oracle event focus generation continues seamlessly.
+- **Background Flash Fix:**
+  - Sampled exact parchment color (`#a37e57`) and applied it to `html` and `body` inline and in CSS to eliminate the white screen flash on load before `background.jpg` finishes loading.
+  - Corrected how-to modal close handler to reset body background to stylesheet default instead of `"initial"`.
+- **Responsiveness Overhaul:**
+  - Enhanced layout across desktop, tablet (`<= 870px`), mobile (`<= 700px`, `<= 500px`, `<= 375px`), and landscape mode.
+  - Replaced nested percentage heights on mobile lists with clean vertical stacking and single smooth scroll container.
+  - Ensured scene cards never overlap the "Add Scene" bottom row by linking container height to `#emulator-window`.
+  - Scaled tab buttons and typography gracefully on small screens without illegible micro-fonts.
