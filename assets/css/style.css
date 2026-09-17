@@ -6,7 +6,10 @@
 
 html {
   background-color: #a37e57;
-  background: #a37e57 url('../images/background.jpg') no-repeat center center fixed;
+  background-image: url('../images/background.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
 }
 
@@ -15,8 +18,8 @@ li {
 }
 
 body {
-  background-color: #a37e57;
   font-family: 'Raleway', sans-serif;
+  background: transparent;
 }
 
 
