@@ -1055,6 +1055,72 @@ iframe {
   color: rgba(255, 255, 255, 0.5);
 }
 
+.empty-adventures-box {
+  text-align: center;
+  padding: 34px 16px;
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 1.1em;
+  margin: 6px 0;
+}
+
+.inline-rename-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.inline-rename-input {
+  flex: 1;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0.5em;
+  color: whitesmoke;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.05em;
+  padding: 6px 12px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.inline-rename-input:focus {
+  border-color: #ffd700;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+}
+
+.inline-rename-btn {
+  background: rgba(184, 180, 180, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: whitesmoke;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.inline-rename-btn.save-rename-btn:hover {
+  background: rgba(46, 139, 87, 0.6);
+  border-color: #4cd964;
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.inline-rename-btn.cancel-rename-btn:hover {
+  background: rgba(187, 10, 30, 0.5);
+  border-color: #ff6b6b;
+  color: #fff;
+  transform: scale(1.08);
+}
+
+
 .game-card-meta {
   font-size: 0.82em;
   color: #aaa;

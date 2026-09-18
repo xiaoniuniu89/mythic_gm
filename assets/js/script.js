@@ -1014,6 +1014,28 @@ function closeGamesModal() {
   }
 }
 
+// Clear active game state when no adventures exist
+function clearActiveGameState() {
+  currentActiveGame = null;
+  scenes = [];
+  characters = [];
+  threads = [];
+  syncOracleArrays();
+  renderScenes();
+  renderCharacters();
+  renderThreads();
+  setChaos(5);
+  if (activeGameNameSpan) {
+    activeGameNameSpan.textContent = 'No Adventure';
+  }
+  if (activeGamePill) {
+    activeGamePill.title = 'No Active Adventure - Click Adventures to create one';
+  }
+  try {
+    localStorage.removeItem('mythic_gm_active_id');
+  } catch (e) {}
+}
+
 // Load a specific game by ID into active state
 async function loadGame(id, shouldCloseModal) {
   if (shouldCloseModal === undefined) shouldCloseModal = true;
@@ -1039,7 +1061,6 @@ async function loadGame(id, shouldCloseModal) {
     activeGamePill.title = 'Current Adventure: ' + (game.name || 'Untitled Adventure');
   }
 
-
   try {
     localStorage.setItem('mythic_gm_active_id', String(game.id));
   } catch (e) {}
@@ -1058,12 +1079,14 @@ async function renderGamesList() {
   gamesListContainer.innerHTML = '';
 
   if (games.length === 0) {
-    const emptyMsg = document.createElement('p');
-    emptyMsg.className = 'empty-list-msg';
-    emptyMsg.style.textAlign = 'center';
-    emptyMsg.style.padding = '24px 10px';
-    emptyMsg.textContent = 'No saved adventures yet. Enter a title above to begin your quest!';
-    gamesListContainer.appendChild(emptyMsg);
+    const emptyBox = document.createElement('div');
+    emptyBox.className = 'empty-adventures-box';
+    emptyBox.innerHTML = [
+      '<i class="fas fa-dungeon" style="font-size: 2.2em; opacity: 0.4; margin-bottom: 12px; display:block;"></i>',
+      '<h4 style="font-family: \'Cinzel Decorative\', cursive; font-size: 1.15em; margin: 0 0 6px 0; color: #ddd;">No Adventures Found</h4>',
+      '<p class="empty-list-msg" style="margin: 0; color: #aaa;">Enter a title above and click "+ New Adventure" to begin your quest.</p>'
+    ].join('');
+    gamesListContainer.appendChild(emptyBox);
     return;
   }
 
@@ -1096,24 +1119,98 @@ async function renderGamesList() {
     const controls = document.createElement('div');
     controls.className = 'game-card-controls';
 
+    // Inline Rename UI Container
+    const renameContainer = document.createElement('div');
+    renameContainer.className = 'inline-rename-container';
+    renameContainer.style.display = 'none';
+
+    const renameInput = document.createElement('input');
+    renameInput.type = 'text';
+    renameInput.className = 'inline-rename-input';
+    renameInput.value = game.name || '';
+    renameInput.placeholder = 'Enter adventure title...';
+
+    const renameSaveBtn = document.createElement('button');
+    renameSaveBtn.type = 'button';
+    renameSaveBtn.className = 'inline-rename-btn save-rename-btn';
+    renameSaveBtn.title = 'Save title';
+    renameSaveBtn.innerHTML = '<i class="fas fa-check"></i>';
+
+    const renameCancelBtn = document.createElement('button');
+    renameCancelBtn.type = 'button';
+    renameCancelBtn.className = 'inline-rename-btn cancel-rename-btn';
+    renameCancelBtn.title = 'Cancel';
+    renameCancelBtn.innerHTML = '<i class="fas fa-times"></i>';
+
+    renameContainer.appendChild(renameInput);
+    renameContainer.appendChild(renameSaveBtn);
+    renameContainer.appendChild(renameCancelBtn);
+
+    async function commitRename() {
+      const val = renameInput.value.trim();
+      if (!val) {
+        renameInput.style.borderColor = '#ff6b6b';
+        renameInput.focus();
+        return;
+      }
+      game.name = val;
+      game.updatedAt = Date.now();
+      await GameStore.save(game);
+      if (isActive) {
+        currentActiveGame.name = game.name;
+        if (activeGameNameSpan) activeGameNameSpan.textContent = game.name;
+        if (activeGamePill) activeGamePill.title = 'Current Adventure: ' + game.name;
+      }
+      await renderGamesList();
+    }
+
+    function cancelRename() {
+      renameContainer.style.display = 'none';
+      titleGroup.style.display = 'flex';
+      controls.style.display = 'flex';
+    }
+
+    renameSaveBtn.onclick = function(e) {
+      e.stopPropagation();
+      commitRename();
+    };
+
+    renameCancelBtn.onclick = function(e) {
+      e.stopPropagation();
+      cancelRename();
+    };
+
+    renameInput.onclick = function(e) {
+      e.stopPropagation();
+    };
+
+    renameInput.onkeydown = function(e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        commitRename();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        cancelRename();
+      }
+    };
+
     // Rename Button
     const renameBtn = document.createElement('button');
     renameBtn.className = 'game-rename-btn';
     renameBtn.title = 'Rename adventure';
     renameBtn.innerHTML = '<i class="fas fa-pen"></i>';
-    renameBtn.onclick = async function(e) {
+    renameBtn.onclick = function(e) {
       e.stopPropagation();
-      const newTitle = prompt('Enter new adventure title:', game.name);
-      if (newTitle && newTitle.trim() && newTitle.trim() !== game.name) {
-        game.name = newTitle.trim();
-        game.updatedAt = Date.now();
-        await GameStore.save(game);
-        if (isActive) {
-          currentActiveGame.name = game.name;
-          if (activeGameNameSpan) activeGameNameSpan.textContent = game.name;
-        }
-        await renderGamesList();
-      }
+      titleGroup.style.display = 'none';
+      controls.style.display = 'none';
+      renameContainer.style.display = 'flex';
+      renameInput.value = game.name || '';
+      renameInput.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+      setTimeout(function() {
+        renameInput.focus();
+        renameInput.select();
+      }, 50);
     };
 
     // Delete Button
@@ -1132,28 +1229,23 @@ async function renderGamesList() {
         if (remaining.length > 0) {
           await loadGame(remaining[0].id, false);
         } else {
-          // Re-create default adventure
-          const freshGame = {
-            id: 'game_' + Date.now(),
-            name: 'New Adventure',
-            chaos: 5,
-            scenes: [],
-            characters: [],
-            threads: [],
-            createdAt: Date.now(),
-            updatedAt: Date.now()
-          };
-          await GameStore.save(freshGame);
-          await loadGame(freshGame.id, false);
+          clearActiveGameState();
         }
       }
       await renderGamesList();
+      if (remaining.length === 0 && newGameInput) {
+        setTimeout(function() {
+          newGameInput.focus();
+        }, 80);
+      }
     };
 
     controls.appendChild(renameBtn);
     controls.appendChild(deleteBtn);
     header.appendChild(titleGroup);
+    header.appendChild(renameContainer);
     header.appendChild(controls);
+
 
     // Meta (Timestamp)
     const meta = document.createElement('div');
@@ -1342,18 +1434,9 @@ async function initAdventures() {
   let games = await GameStore.getAll();
 
   if (games.length === 0) {
-    const starterAdventure = {
-      id: 'game_' + Date.now(),
-      name: 'The First Quest',
-      chaos: 5,
-      scenes: [],
-      characters: [],
-      threads: [],
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
-    await GameStore.save(starterAdventure);
-    games = [starterAdventure];
+    clearActiveGameState();
+    openGamesModal();
+    return;
   }
 
   let lastActiveId = null;
@@ -1369,6 +1452,7 @@ async function initAdventures() {
   // Present the Adventures menu on initial load as requested
   openGamesModal();
 }
+
 
 // Initialize on DOM ready
 if (document.readyState === 'loading') {
