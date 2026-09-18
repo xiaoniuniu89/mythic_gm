@@ -990,6 +990,21 @@ const exportGamesBtn = document.getElementById('export-games-btn');
 const importGamesInput = document.getElementById('import-games-input');
 const dbStatusTag = document.getElementById('db-status-tag');
 
+// Update modal controls based on whether an active game exists
+function updateGamesModalControls() {
+  const hasGame = !!currentActiveGame;
+  if (closeGamesModalBtn) {
+    closeGamesModalBtn.style.display = hasGame ? 'block' : 'none';
+  }
+  if (closeGamesModalBtn2) {
+    closeGamesModalBtn2.style.display = hasGame ? 'inline-block' : 'none';
+  }
+  const noAdvNotice = document.getElementById('no-adventure-notice');
+  if (noAdvNotice) {
+    noAdvNotice.style.display = hasGame ? 'none' : 'flex';
+  }
+}
+
 // Open Adventures modal
 function openGamesModal() {
   if (!gamesModal) return;
@@ -999,6 +1014,7 @@ function openGamesModal() {
       ? '<i class="fas fa-database"></i> SQLite Desktop'
       : '<i class="fas fa-hdd"></i> Local Storage';
   }
+  updateGamesModalControls();
   renderGamesList();
   if (newGameInput) {
     setTimeout(function() {
@@ -1007,8 +1023,15 @@ function openGamesModal() {
   }
 }
 
-// Close Adventures modal
+// Close Adventures modal - only permitted if an active adventure is loaded
 function closeGamesModal() {
+  if (!currentActiveGame) {
+    if (newGameInput) {
+      newGameInput.style.borderColor = '#ff6b6b';
+      newGameInput.focus();
+    }
+    return;
+  }
   if (gamesModal) {
     gamesModal.style.display = 'none';
   }
@@ -1034,6 +1057,7 @@ function clearActiveGameState() {
   try {
     localStorage.removeItem('mythic_gm_active_id');
   } catch (e) {}
+  updateGamesModalControls();
 }
 
 // Load a specific game by ID into active state
@@ -1065,12 +1089,15 @@ async function loadGame(id, shouldCloseModal) {
     localStorage.setItem('mythic_gm_active_id', String(game.id));
   } catch (e) {}
 
+  updateGamesModalControls();
+
   if (shouldCloseModal) {
     closeGamesModal();
   } else {
     renderGamesList();
   }
 }
+
 
 // Render adventures list in modal
 async function renderGamesList() {
@@ -1399,7 +1426,18 @@ if (gamesMenuBtn) gamesMenuBtn.onclick = openGamesModal;
 if (closeGamesModalBtn) closeGamesModalBtn.onclick = closeGamesModal;
 
 if (closeGamesModalBtn2) closeGamesModalBtn2.onclick = closeGamesModal;
-if (gamesModalBackdrop) gamesModalBackdrop.onclick = closeGamesModal;
+if (gamesModalBackdrop) {
+  gamesModalBackdrop.onclick = function() {
+    if (!currentActiveGame) {
+      if (newGameInput) {
+        newGameInput.style.borderColor = '#ff6b6b';
+        newGameInput.focus();
+      }
+      return;
+    }
+    closeGamesModal();
+  };
+}
 
 // Desktop Menu IPC Listeners
 if (isDesktopApp && window.electronAPI) {
@@ -1424,10 +1462,19 @@ if (isDesktopApp && window.electronAPI) {
 document.addEventListener('keydown', function(e) {
   if (gamesModal && gamesModal.style.display === 'flex') {
     if (e.key === 'Escape') {
+      if (!currentActiveGame) {
+        e.preventDefault();
+        if (newGameInput) {
+          newGameInput.style.borderColor = '#ff6b6b';
+          newGameInput.focus();
+        }
+        return;
+      }
       closeGamesModal();
     }
   }
 });
+
 
 // App Startup & Adventures Initialization
 async function initAdventures() {

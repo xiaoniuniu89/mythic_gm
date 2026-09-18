@@ -945,9 +945,29 @@ iframe {
   flex-direction: column;
 }
 
+.modal-notice {
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  color: #ffd700;
+  padding: 10px 16px;
+  border-radius: 0.8em;
+  font-size: 0.92em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Raleway', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.modal-notice i {
+  font-size: 1.1em;
+}
+
 .new-game-section {
   margin-bottom: 16px;
 }
+
 
 .new-game-bar {
   display: flex;

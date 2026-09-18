@@ -58,4 +58,12 @@ Chronological record of all updates, ingests, and compilations in this developer
   - Added clean `.empty-adventures-box` prompting user to enter a new adventure title, with automatic input focus.
   - `clearActiveGameState()` cleanly resets the active adventure indicator to "No Adventure".
 
+## [2026-09-18 22:45] ux improvement | Mandatory Adventure Enforcement (Modal Lock)
+- **Modal Close Prevention:**
+  - Disallowed closing `#games-modal` when `currentActiveGame === null`.
+  - Hides close buttons (`#close-games-modal` & `#close-games-modal-btn`) when no adventure is active.
+  - Backdrop clicks and `Escape` key are intercepted and redirected to focusing `#new-game-input`.
+  - Added `#no-adventure-notice` warning banner indicating an adventure must be loaded or created to begin playing.
+
+
 
