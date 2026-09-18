@@ -89,33 +89,42 @@ function openTab(evt, tabName) {
 /*Chaos Number 
 the chaos number can go from 1 to 9. a higher chaos number influences answers to yes/no questions and to the 
 likelyhood of random events occuring. At level 9 there is an animation to highlight the danger of the chaos being this high.*/
-let chaosNumberDisplay = parseInt(document.getElementById("chaos-number").textContent);
+let chaosNumberDisplay = parseInt(document.getElementById("chaos-number").textContent) || 5;
+let chaosNumber = chaosNumberDisplay - 1;
 let chaosPrev = document.getElementById('chaos-prev');
 let chaosNext = document.getElementById('chaos-next');
 
+function setChaos(val) {
+  chaosNumberDisplay = Math.min(Math.max(1, parseInt(val) || 5), 9);
+  chaosNumber = chaosNumberDisplay - 1;
+  const chaosEl = document.getElementById("chaos-number");
+  const chaosTxt = document.getElementById("chaos-txt");
+  if (chaosEl) chaosEl.innerHTML = `${chaosNumberDisplay}`;
+  if (chaosNumberDisplay === 9) {
+    if (chaosEl) chaosEl.classList.add("chaos-red");
+    if (chaosTxt) chaosTxt.classList.add("chaos-red");
+  } else {
+    if (chaosEl) chaosEl.classList.remove("chaos-red");
+    if (chaosTxt) chaosTxt.classList.remove("chaos-red");
+  }
+}
+
 //previous button
 chaosPrev.onclick = function() {
-  if(chaosNumberDisplay > 1){
-    chaosNumberDisplay -= 1;
-  document.getElementById("chaos-number").innerHTML = `${chaosNumberDisplay}`;
-  }
-  if(chaosNumberDisplay < 9){
-    document.getElementById("chaos-number").classList.remove("chaos-red");
-    document.getElementById("chaos-txt").classList.remove("chaos-red");
+  if (chaosNumberDisplay > 1) {
+    setChaos(chaosNumberDisplay - 1);
+    if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
   }
 };
 
 //next button
 chaosNext.onclick = function() {
-  if(chaosNumberDisplay < 9){
-    chaosNumberDisplay += 1;
-  document.getElementById("chaos-number").innerHTML = `${chaosNumberDisplay}`;
-  }
-  if(chaosNumberDisplay == 9){
-    document.getElementById("chaos-number").classList.add("chaos-red");
-    document.getElementById("chaos-txt").classList.add("chaos-red");
+  if (chaosNumberDisplay < 9) {
+    setChaos(chaosNumberDisplay + 1);
+    if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
   }
 };
+
 
 /*scene button 
  the scene button is used at the start of a scene to see if anything is altered or interrupted.
@@ -152,7 +161,7 @@ sceneGenerateButton.onclick = function() {
 let questionButton = document.getElementById('question-btn');
 let oddsBox = document.getElementById('odds-modal');
 let oddsButton = document.getElementById('set-odds-button');
-let chaosNumber = parseInt(document.getElementById("chaos-number").textContent) - 1; 
+chaosNumber = chaosNumberDisplay - 1; 
 
 // display the odds selector modal - help from this tutorial - https://www.w3schools.com/howto/howto_js_quotes_slideshow.asp
 questionButton.onclick = function() {
@@ -514,6 +523,7 @@ function saveItemModal() {
     renderThreads();
   }
 
+  if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
   closeItemModal();
 }
 
@@ -536,8 +546,10 @@ function deleteItemModal() {
     renderThreads();
   }
 
+  if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
   closeItemModal();
 }
+
 
 // Render scenes into #scene-window
 function renderScenes() {
@@ -572,6 +584,7 @@ function renderScenes() {
       e.stopPropagation();
       scenes = scenes.filter(function(s) { return s.id !== scene.id; });
       renderScenes();
+      if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
     };
 
     header.appendChild(title);
@@ -631,6 +644,7 @@ function renderCharacters() {
       characters = characters.filter(function(c) { return c.id !== char.id; });
       syncOracleArrays();
       renderCharacters();
+      if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
     };
 
     header.appendChild(title);
@@ -685,7 +699,9 @@ function renderThreads() {
       threads = threads.filter(function(t) { return t.id !== thread.id; });
       syncOracleArrays();
       renderThreads();
+      if (typeof autoSaveActiveGame === 'function') autoSaveActiveGame();
     };
+
 
     header.appendChild(title);
     header.appendChild(closeBtn);
@@ -768,4 +784,593 @@ renderThreads();
     bgOverlay.classList.add('loaded');
   }
 })();
+
+/* ==========================================================================
+   Multi-Session Persistent Adventure Management (SQLite / LocalStorage)
+   ========================================================================== */
+
+// Detect if running in desktop Electron shell
+const isDesktopApp = typeof window !== 'undefined' && !!window.electronAPI && !!window.electronAPI.isDesktop;
+
+// Unified Storage Adapter
+const GameStore = {
+  isDesktop: isDesktopApp,
+
+  async getAll() {
+    if (this.isDesktop) {
+      try {
+        const games = await window.electronAPI.getGames();
+        if (Array.isArray(games)) return games;
+      } catch (err) {
+        console.error('[GameStore] Electron getGames error:', err);
+      }
+    }
+    // Web / LocalStorage Fallback
+    try {
+      const raw = localStorage.getItem('mythic_gm_adventures');
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (err) {
+      console.error('[GameStore] localStorage read error:', err);
+      return [];
+    }
+  },
+
+  async get(id) {
+    if (this.isDesktop) {
+      try {
+        const game = await window.electronAPI.getGame(id);
+        if (game) return game;
+      } catch (err) {
+        console.error('[GameStore] Electron getGame error:', err);
+      }
+    }
+    const list = await this.getAll();
+    return list.find(function(g) { return String(g.id) === String(id); }) || null;
+  },
+
+  async save(game) {
+    if (!game || !game.id) return null;
+    const now = Date.now();
+    const payload = {
+      id: String(game.id),
+      name: (game.name || 'Untitled Adventure').trim(),
+      chaos: typeof game.chaos === 'number' ? game.chaos : 5,
+      scenes: Array.isArray(game.scenes) ? game.scenes : [],
+      characters: Array.isArray(game.characters) ? game.characters : [],
+      threads: Array.isArray(game.threads) ? game.threads : [],
+      createdAt: game.createdAt || game.created_at || now,
+      updatedAt: now
+    };
+
+    if (this.isDesktop) {
+      try {
+        const res = await window.electronAPI.saveGame(payload);
+        if (res) return res;
+      } catch (err) {
+        console.error('[GameStore] Electron saveGame error:', err);
+      }
+    }
+
+    // Web / LocalStorage Fallback
+    try {
+      let list = await this.getAll();
+      const existingIdx = list.findIndex(function(g) { return String(g.id) === String(payload.id); });
+      if (existingIdx >= 0) {
+        list[existingIdx] = payload;
+      } else {
+        list.unshift(payload);
+      }
+      localStorage.setItem('mythic_gm_adventures', JSON.stringify(list));
+      return payload;
+    } catch (err) {
+      console.error('[GameStore] localStorage save error:', err);
+      return payload;
+    }
+  },
+
+  async delete(id) {
+    if (this.isDesktop) {
+      try {
+        return await window.electronAPI.deleteGame(id);
+      } catch (err) {
+        console.error('[GameStore] Electron deleteGame error:', err);
+      }
+    }
+    try {
+      let list = await this.getAll();
+      list = list.filter(function(g) { return String(g.id) !== String(id); });
+      localStorage.setItem('mythic_gm_adventures', JSON.stringify(list));
+      return true;
+    } catch (err) {
+      console.error('[GameStore] localStorage delete error:', err);
+      return false;
+    }
+  },
+
+  async exportBackup() {
+    if (this.isDesktop) {
+      try {
+        return await window.electronAPI.exportBackup();
+      } catch (err) {
+        console.error('[GameStore] Electron exportBackup error:', err);
+      }
+    }
+    const games = await this.getAll();
+    return JSON.stringify({
+      version: 1,
+      exportedAt: Date.now(),
+      application: "Mythic GM Web",
+      games: games
+    }, null, 2);
+  },
+
+  async importBackup(backupData) {
+    if (this.isDesktop) {
+      try {
+        return await window.electronAPI.importBackup(backupData);
+      } catch (err) {
+        console.error('[GameStore] Electron importBackup error:', err);
+      }
+    }
+    if (!backupData || !Array.isArray(backupData.games)) return [];
+    try {
+      let current = await this.getAll();
+      const map = new Map();
+      current.forEach(function(g) { map.set(String(g.id), g); });
+      backupData.games.forEach(function(g) {
+        if (g && g.id && g.name) {
+          map.set(String(g.id), {
+            id: String(g.id),
+            name: g.name,
+            chaos: typeof g.chaos === 'number' ? g.chaos : 5,
+            scenes: Array.isArray(g.scenes) ? g.scenes : [],
+            characters: Array.isArray(g.characters) ? g.characters : [],
+            threads: Array.isArray(g.threads) ? g.threads : [],
+            createdAt: g.createdAt || Date.now(),
+            updatedAt: g.updatedAt || Date.now()
+          });
+        }
+      });
+      const merged = Array.from(map.values()).sort(function(a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+      localStorage.setItem('mythic_gm_adventures', JSON.stringify(merged));
+      return merged;
+    } catch (err) {
+      console.error('[GameStore] localStorage import error:', err);
+      return [];
+    }
+  }
+};
+
+// Current Session State
+let currentActiveGame = null;
+let autoSaveDebounceTimer = null;
+
+// Debounced auto-save function
+function autoSaveActiveGame() {
+  if (!currentActiveGame) return;
+  currentActiveGame.chaos = chaosNumberDisplay;
+  currentActiveGame.scenes = scenes;
+  currentActiveGame.characters = characters;
+  currentActiveGame.threads = threads;
+  currentActiveGame.updatedAt = Date.now();
+
+  clearTimeout(autoSaveDebounceTimer);
+  autoSaveDebounceTimer = setTimeout(async function() {
+    await GameStore.save(currentActiveGame);
+  }, 250);
+}
+
+// Format relative time helper
+function formatTimeAgo(timestamp) {
+  if (!timestamp) return 'Just now';
+  const diffSec = Math.floor((Date.now() - timestamp) / 1000);
+  if (diffSec < 60) return 'Just now';
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHour = Math.floor(diffMin / 60);
+  if (diffHour < 24) return `${diffHour}h ago`;
+  const diffDays = Math.floor(diffHour / 24);
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return new Date(timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// DOM Elements for Adventures Modal & Top Navigation
+const gamesModal = document.getElementById('games-modal');
+const gamesModalBackdrop = document.getElementById('games-modal-backdrop');
+const closeGamesModalBtn = document.getElementById('close-games-modal');
+const closeGamesModalBtn2 = document.getElementById('close-games-modal-btn');
+const gamesMenuBtn = document.getElementById('games-menu-btn');
+const activeGamePill = document.getElementById('active-game-pill');
+const activeGameNameSpan = document.getElementById('active-game-name');
+const gamesListContainer = document.getElementById('games-list');
+const newGameForm = document.getElementById('new-game-form');
+const newGameInput = document.getElementById('new-game-input');
+const exportGamesBtn = document.getElementById('export-games-btn');
+const importGamesInput = document.getElementById('import-games-input');
+const dbStatusTag = document.getElementById('db-status-tag');
+
+// Open Adventures modal
+function openGamesModal() {
+  if (!gamesModal) return;
+  gamesModal.style.display = 'flex';
+  if (dbStatusTag) {
+    dbStatusTag.innerHTML = isDesktopApp
+      ? '<i class="fas fa-database"></i> SQLite Desktop'
+      : '<i class="fas fa-hdd"></i> Local Storage';
+  }
+  renderGamesList();
+  if (newGameInput) {
+    setTimeout(function() {
+      newGameInput.focus();
+    }, 60);
+  }
+}
+
+// Close Adventures modal
+function closeGamesModal() {
+  if (gamesModal) {
+    gamesModal.style.display = 'none';
+  }
+}
+
+// Load a specific game by ID into active state
+async function loadGame(id, shouldCloseModal) {
+  if (shouldCloseModal === undefined) shouldCloseModal = true;
+  const game = await GameStore.get(id);
+  if (!game) return;
+
+  currentActiveGame = game;
+  setChaos(typeof game.chaos === 'number' ? game.chaos : 5);
+
+  scenes = Array.isArray(game.scenes) ? [...game.scenes] : [];
+  characters = Array.isArray(game.characters) ? [...game.characters] : [];
+  threads = Array.isArray(game.threads) ? [...game.threads] : [];
+
+  syncOracleArrays();
+  renderScenes();
+  renderCharacters();
+  renderThreads();
+
+  if (activeGameNameSpan) {
+    activeGameNameSpan.textContent = game.name || 'Untitled Adventure';
+  }
+
+  try {
+    localStorage.setItem('mythic_gm_active_id', String(game.id));
+  } catch (e) {}
+
+  if (shouldCloseModal) {
+    closeGamesModal();
+  } else {
+    renderGamesList();
+  }
+}
+
+// Render adventures list in modal
+async function renderGamesList() {
+  if (!gamesListContainer) return;
+  const games = await GameStore.getAll();
+  gamesListContainer.innerHTML = '';
+
+  if (games.length === 0) {
+    const emptyMsg = document.createElement('p');
+    emptyMsg.className = 'empty-list-msg';
+    emptyMsg.style.textAlign = 'center';
+    emptyMsg.style.padding = '24px 10px';
+    emptyMsg.textContent = 'No saved adventures yet. Enter a title above to begin your quest!';
+    gamesListContainer.appendChild(emptyMsg);
+    return;
+  }
+
+  games.forEach(function(game) {
+    const isActive = currentActiveGame && String(currentActiveGame.id) === String(game.id);
+    const card = document.createElement('div');
+    card.className = 'game-card' + (isActive ? ' active-card' : '');
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'game-card-header';
+
+    const titleGroup = document.createElement('div');
+    titleGroup.className = 'game-card-title-group';
+
+    const title = document.createElement('h4');
+    title.className = 'game-card-title';
+    title.textContent = game.name || 'Untitled Adventure';
+    titleGroup.appendChild(title);
+
+    if (isActive) {
+      const activeBadge = document.createElement('span');
+      activeBadge.className = 'game-active-badge';
+      activeBadge.innerHTML = '<i class="fas fa-check"></i> Current';
+      titleGroup.appendChild(activeBadge);
+    }
+
+    const controls = document.createElement('div');
+    controls.className = 'game-card-controls';
+
+    // Rename Button
+    const renameBtn = document.createElement('button');
+    renameBtn.className = 'game-rename-btn';
+    renameBtn.title = 'Rename adventure';
+    renameBtn.innerHTML = '<i class="fas fa-pen"></i>';
+    renameBtn.onclick = async function(e) {
+      e.stopPropagation();
+      const newTitle = prompt('Enter new adventure title:', game.name);
+      if (newTitle && newTitle.trim() && newTitle.trim() !== game.name) {
+        game.name = newTitle.trim();
+        game.updatedAt = Date.now();
+        await GameStore.save(game);
+        if (isActive) {
+          currentActiveGame.name = game.name;
+          if (activeGameNameSpan) activeGameNameSpan.textContent = game.name;
+        }
+        await renderGamesList();
+      }
+    };
+
+    // Delete Button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'card-close-btn game-delete-btn';
+    deleteBtn.title = 'Delete adventure';
+    deleteBtn.innerHTML = '&times;';
+    deleteBtn.onclick = async function(e) {
+      e.stopPropagation();
+      const confirmed = confirm('Are you sure you want to delete "' + (game.name || 'this adventure') + '"? All its scenes, characters, and threads will be removed.');
+      if (!confirmed) return;
+
+      await GameStore.delete(game.id);
+      const remaining = await GameStore.getAll();
+      if (isActive) {
+        if (remaining.length > 0) {
+          await loadGame(remaining[0].id, false);
+        } else {
+          // Re-create default adventure
+          const freshGame = {
+            id: 'game_' + Date.now(),
+            name: 'New Adventure',
+            chaos: 5,
+            scenes: [],
+            characters: [],
+            threads: [],
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          };
+          await GameStore.save(freshGame);
+          await loadGame(freshGame.id, false);
+        }
+      }
+      await renderGamesList();
+    };
+
+    controls.appendChild(renameBtn);
+    controls.appendChild(deleteBtn);
+    header.appendChild(titleGroup);
+    header.appendChild(controls);
+
+    // Meta (Timestamp)
+    const meta = document.createElement('div');
+    meta.className = 'game-card-meta';
+    meta.innerHTML = '<i class="far fa-clock"></i> Updated ' + formatTimeAgo(game.updatedAt);
+
+    // Stats Badges
+    const stats = document.createElement('div');
+    stats.className = 'game-card-stats';
+
+    const sceneCount = Array.isArray(game.scenes) ? game.scenes.length : 0;
+    const charCount = Array.isArray(game.characters) ? game.characters.length : 0;
+    const threadCount = Array.isArray(game.threads) ? game.threads.length : 0;
+    const chaosVal = typeof game.chaos === 'number' ? game.chaos : 5;
+
+    stats.innerHTML = [
+      '<span class="game-stat-badge"><i class="fas fa-bolt"></i> Chaos ' + chaosVal + '</span>',
+      '<span class="game-stat-badge"><i class="fas fa-scroll"></i> ' + sceneCount + ' Scene' + (sceneCount === 1 ? '' : 's') + '</span>',
+      '<span class="game-stat-badge"><i class="fas fa-user-friends"></i> ' + charCount + ' Character' + (charCount === 1 ? '' : 's') + '</span>',
+      '<span class="game-stat-badge"><i class="fas fa-map-signs"></i> ' + threadCount + ' Thread' + (threadCount === 1 ? '' : 's') + '</span>'
+    ].join('');
+
+    // Footer
+    const footer = document.createElement('div');
+    footer.className = 'game-card-footer';
+
+    if (isActive) {
+      const activeBtn = document.createElement('button');
+      activeBtn.className = 'modal-btn save-btn game-load-btn';
+      activeBtn.disabled = true;
+      activeBtn.style.opacity = '0.7';
+      activeBtn.style.cursor = 'default';
+      activeBtn.innerHTML = '<i class="fas fa-play"></i> Playing';
+      footer.appendChild(activeBtn);
+    } else {
+      const loadBtn = document.createElement('button');
+      loadBtn.className = 'modal-btn save-btn game-load-btn';
+      loadBtn.innerHTML = '<i class="fas fa-folder-open"></i> Load Adventure';
+      loadBtn.onclick = function(e) {
+        e.stopPropagation();
+        loadGame(game.id, true);
+      };
+      footer.appendChild(loadBtn);
+    }
+
+    card.appendChild(header);
+    card.appendChild(meta);
+    card.appendChild(stats);
+    card.appendChild(footer);
+
+    card.onclick = function() {
+      loadGame(game.id, true);
+    };
+
+    gamesListContainer.appendChild(card);
+  });
+}
+
+// Create New Adventure Form Submission
+if (newGameForm) {
+  newGameForm.onsubmit = async function(e) {
+    e.preventDefault();
+    const titleVal = newGameInput ? newGameInput.value.trim() : '';
+    if (!titleVal) {
+      if (newGameInput) {
+        newGameInput.style.borderColor = '#ff6b6b';
+        newGameInput.focus();
+      }
+      return false;
+    }
+
+    const newGame = {
+      id: 'game_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+      name: titleVal,
+      chaos: 5,
+      scenes: [],
+      characters: [],
+      threads: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    await GameStore.save(newGame);
+    if (newGameInput) {
+      newGameInput.value = '';
+      newGameInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+    }
+
+    await loadGame(newGame.id, true);
+    return false;
+  };
+}
+
+// Backup Export Button
+if (exportGamesBtn) {
+  exportGamesBtn.onclick = async function() {
+    try {
+      const backupJson = await GameStore.exportBackup();
+      const blob = new Blob([backupJson], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mythic-gm-adventures-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Export failed:', err);
+      alert('Failed to export adventure backup.');
+    }
+  };
+}
+
+// Backup Import Input
+if (importGamesInput) {
+  importGamesInput.onchange = function(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async function(loadEvt) {
+      try {
+        const parsed = JSON.parse(loadEvt.target.result);
+        if (!parsed || !Array.isArray(parsed.games)) {
+          alert('Invalid backup file format. Expected a JSON file with a "games" array.');
+          return;
+        }
+
+        const updatedGames = await GameStore.importBackup(parsed);
+        if (updatedGames && updatedGames.length > 0) {
+          await renderGamesList();
+          await loadGame(updatedGames[0].id, false);
+          alert('Successfully imported ' + parsed.games.length + ' adventure(s)!');
+        } else {
+          alert('No valid adventures found in the backup file.');
+        }
+      } catch (err) {
+        console.error('Import parse error:', err);
+        alert('Failed to parse backup JSON file.');
+      } finally {
+        importGamesInput.value = '';
+      }
+    };
+    reader.readAsText(file);
+  };
+}
+
+// Modal Event Listeners
+if (gamesMenuBtn) gamesMenuBtn.onclick = openGamesModal;
+if (activeGamePill) activeGamePill.onclick = openGamesModal;
+if (closeGamesModalBtn) closeGamesModalBtn.onclick = closeGamesModal;
+if (closeGamesModalBtn2) closeGamesModalBtn2.onclick = closeGamesModal;
+if (gamesModalBackdrop) gamesModalBackdrop.onclick = closeGamesModal;
+
+// Desktop Menu IPC Listeners
+if (isDesktopApp && window.electronAPI) {
+  if (typeof window.electronAPI.onMenuOpenAdventures === 'function') {
+    window.electronAPI.onMenuOpenAdventures(function() {
+      openGamesModal();
+    });
+  }
+  if (typeof window.electronAPI.onMenuNewAdventure === 'function') {
+    window.electronAPI.onMenuNewAdventure(function() {
+      openGamesModal();
+      if (newGameInput) {
+        setTimeout(function() {
+          newGameInput.focus();
+        }, 80);
+      }
+    });
+  }
+}
+
+// Keyboard shortcuts for games modal
+document.addEventListener('keydown', function(e) {
+  if (gamesModal && gamesModal.style.display === 'flex') {
+    if (e.key === 'Escape') {
+      closeGamesModal();
+    }
+  }
+});
+
+// App Startup & Adventures Initialization
+async function initAdventures() {
+  let games = await GameStore.getAll();
+
+  if (games.length === 0) {
+    const starterAdventure = {
+      id: 'game_' + Date.now(),
+      name: 'The First Quest',
+      chaos: 5,
+      scenes: [],
+      characters: [],
+      threads: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+    await GameStore.save(starterAdventure);
+    games = [starterAdventure];
+  }
+
+  let lastActiveId = null;
+  try {
+    lastActiveId = localStorage.getItem('mythic_gm_active_id');
+  } catch (e) {}
+
+  const gameToLoad = games.find(function(g) { return String(g.id) === String(lastActiveId); }) || games[0];
+
+  // Load adventure state into the emulator
+  await loadGame(gameToLoad.id, false);
+
+  // Present the Adventures menu on initial load as requested
+  openGamesModal();
+}
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdventures);
+} else {
+  initAdventures();
+}
+
 

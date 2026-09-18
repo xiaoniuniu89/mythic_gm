@@ -1,0 +1,62 @@
+{
+  "name": "mythic-gm",
+  "version": "1.0.0",
+  "description": "Mythic GM Emulator - Solo RPG Game Master Tool with Persistent Adventures",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "desktop": "electron .",
+    "desktop:pack": "electron-builder --dir",
+    "desktop:build": "electron-builder",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "mythic-gm",
+    "rpg",
+    "ttrpg",
+    "solo-rpg",
+    "game-master",
+    "emulator"
+  ],
+  "author": "Daniel Callaghan",
+  "license": "MIT",
+  "build": {
+    "appId": "com.mythicgm.app",
+    "productName": "Mythic GM",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "assets/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.games",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.4.2",
+    "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "sql.js": "^1.14.2"
+  }
+}

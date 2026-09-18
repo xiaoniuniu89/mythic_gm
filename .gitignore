@@ -42,3 +42,8 @@ next-env.d.ts
 
 # kb raw binaries
 kb/raw/*.pdf
+
+# electron & builds
+/dist/
+*.sqlite
+

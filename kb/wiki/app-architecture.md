@@ -52,9 +52,42 @@ During the architecture review, the following logic differences from the **Mythi
 - **Rule:** 2nd Edition uses a hard-coded column reference on the Fate Chart (e.g. for a threshold of 10 at Chaos 1, the Exceptional Yes limit is 2, and Exceptional No is 83).
 - **Fix:** Map the exact 2e Fate Chart tables into `src/lib/constants.ts` to replace these 1e-based mathematical approximations.
 
+## 🖥️ Electron Desktop Architecture & Multi-Session Persistence
+
+The application supports both local desktop deployment via **Electron** and standalone browser operation through an isomorphic storage adapter pattern:
+
+```mermaid
+graph TD
+    UI[Frontend UI: index.html + script.js] -->|Unified API| Adapter[GameStore Adapter]
+    Adapter -->|Desktop Shell| Preload[electron/preload.js contextBridge]
+    Preload -->|IPC: db:*| Main[electron/main.js IPC Handlers]
+    Main -->|Pure WASM SQLite| DB[electron/database.js sql.js]
+    DB -->|Disk Persistence| SQLiteFile[(userData/mythic_gm.sqlite)]
+    DB -->|Redundant Backup| JSONFile[(userData/mythic_games_backup.json)]
+    Adapter -->|Web Fallback| LS[(Browser LocalStorage)]
+```
+
+### 1. Zero-Auth Local SQLite (`sql.js`)
+- Uses WebAssembly-compiled SQLite (`sql.js`), avoiding C++ `node-gyp` native binary build issues across macOS/Windows/Linux architectures.
+- Persists to `<userData>/mythic_gm.sqlite` upon every change and writes a readable JSON backup to `<userData>/mythic_games_backup.json`.
+- Schema: `games (id TEXT PRIMARY KEY, name TEXT NOT NULL, chaos INTEGER NOT NULL, scenes TEXT, characters TEXT, threads TEXT, created_at INTEGER, updated_at INTEGER)`.
+
+### 2. Multi-Session Adventure Manager
+- **On-Load Modal:** Prompts the user with saved adventures or lets them create a new one on application startup.
+- **Top Navigation Bar:** Displays current adventure name in `#active-game-pill`, allowing switching or creating sessions anytime.
+- **Real-Time Auto-Saving:** Chaos changes, card additions, edits, and deletions automatically persist without manual saving.
+- **Backup & Restore:** Full JSON export and import capabilities for offline migration and safe backups.
+
+### 3. NPM Desktop Commands
+- `npm run desktop` / `npm start`: Launch the desktop application with full native menus and shortcuts.
+- `npm run desktop:pack`: Fast unpackaged application bundle test.
+- `npm run desktop:build`: Distributable DMG/ZIP (macOS), NSIS/Portable (Windows), and AppImage/Deb (Linux).
+- `npm run serve`: Host the web version locally.
+
 ---
 
 ## 🔗 Connections
 - [[index]] — Knowledge base map.
 - [[rules-summary]] — High-level Mythic mechanics.
 - [[ai-oracle-prompting]] — How LLMs parse campaign context.
+

@@ -33,3 +33,19 @@ Chronological record of all updates, ingests, and compilations in this developer
   - Replaced nested percentage heights on mobile lists with clean vertical stacking and single smooth scroll container.
   - Ensured scene cards never overlap the "Add Scene" bottom row by linking container height to `#emulator-window`.
   - Scaled tab buttons and typography gracefully on small screens without illegible micro-fonts.
+
+## [2026-09-18 16:30] feature | Electron Desktop App & Multi-Session Persistent SQLite Database
+- **Electron Desktop Conversion:**
+  - Configured Electron shell (`electron/main.js`, `electron/preload.js`) with native menus and shortcuts (`CmdOrCtrl+O` for Saved Adventures, `CmdOrCtrl+N` for New Adventure).
+  - Packaged via `electron-builder` with multi-platform targets for macOS (`dmg`, `zip`), Windows (`nsis`, `portable`), and Linux (`AppImage`, `deb`).
+  - Added npm scripts: `npm run desktop` (`npm start`), `npm run desktop:pack`, `npm run desktop:build`, and `npm run serve`.
+- **Zero-Auth Local Persistence:**
+  - Implemented persistent SQLite database manager (`electron/database.js`) using WebAssembly-based `sql.js` (eliminates C++ compilation/node-gyp issues across platforms).
+  - SQLite database file stored at `<userData>/mythic_gm.sqlite` with an automatic JSON mirror at `<userData>/mythic_games_backup.json`.
+  - Isomorphic `GameStore` adapter routes seamlessly to Electron IPC when in desktop mode and transparently falls back to `localStorage` in browser mode.
+- **Multi-Session Adventures UI:**
+  - Added top navigation bar with `#active-game-pill` showing current adventure name and quick-access `#games-menu-btn`.
+  - Created `#games-modal` providing an on-load adventure picker with title input, dynamic adventure cards, stats badges (Chaos, Scenes, Characters, Threads, timestamps), rename, and delete actions.
+  - Enabled real-time auto-saving on any state mutation (chaos changes, card additions, edits, deletions).
+  - Implemented offline JSON Backup and Restore features for easy portability.
+

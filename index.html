@@ -22,9 +22,15 @@
   <section>
     <h1 id="logo">Mythic GM</h1>
   <!--How to use section contained in modal-->
+    <div id="top-nav-bar">
+      <button id="games-menu-btn" class="nav-pill-btn"><i class="fas fa-dungeon"></i> Adventures</button>
+      <div id="active-game-pill" class="active-game-pill" title="Current adventure - click to switch">
+        <i class="fas fa-scroll"></i>
+        <span id="active-game-name">Loading...</span>
+      </div>
+      <button id="how-to-btn" class="nav-pill-btn"><i class="fas fa-book"></i> Glossary</button>
+    </div>
     <div id="how-to">
-      <!--To open modal-->
-      <button id="how-to-btn">Glossary</button>
       <!--Modal window-->
       <div id="how-to-modal" class="modal">
         <!--Content of modal-->
@@ -240,6 +246,51 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Games / Adventures Menu Modal -->
+  <div id="games-modal" class="item-modal" style="display: none;">
+    <div class="item-modal-backdrop" id="games-modal-backdrop"></div>
+    <div class="item-modal-content games-modal-content" role="dialog" aria-modal="true" aria-labelledby="games-modal-title">
+      <div class="item-modal-header">
+        <h3 id="games-modal-title"><i class="fas fa-dungeon"></i> Mythic Adventures</h3>
+        <button aria-label="close adventures modal" id="close-games-modal" class="modal-close-btn">&times;</button>
+      </div>
+
+      <!-- New Game Section -->
+      <div class="new-game-section">
+        <form id="new-game-form" onsubmit="return false;">
+          <div class="new-game-bar">
+            <input type="text" id="new-game-input" class="modal-input" placeholder="Enter new adventure title (e.g. Crypt of the Lich)..." autocomplete="off">
+            <button type="submit" id="create-game-btn" class="modal-btn save-btn">
+              <i class="fas fa-plus"></i> New Adventure
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Saved Games List -->
+      <div id="games-list" class="games-list-container">
+        <!-- Dynamic game cards -->
+      </div>
+
+      <!-- Modal Footer with Backup / Restore -->
+      <div class="games-modal-footer">
+        <div class="backup-actions">
+          <button type="button" id="export-games-btn" class="backup-btn" title="Export all adventures to a JSON file">
+            <i class="fas fa-file-download"></i> Backup
+          </button>
+          <label for="import-games-input" class="backup-btn" title="Restore adventures from a JSON backup file">
+            <i class="fas fa-file-upload"></i> Restore
+          </label>
+          <input type="file" id="import-games-input" accept=".json" style="display: none;">
+        </div>
+        <div class="games-footer-right">
+          <span id="db-status-tag" class="db-status-tag"></span>
+          <button type="button" id="close-games-modal-btn" class="modal-btn cancel-btn">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 
