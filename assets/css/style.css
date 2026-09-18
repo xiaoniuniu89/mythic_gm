@@ -77,19 +77,19 @@ body {
 
 .active-game-pill {
   background-color: rgba(20, 20, 20, 0.85);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  border: 1px solid rgba(255, 215, 0, 0.35);
   border-radius: 2em;
   padding: 10px 22px;
   color: whitesmoke;
   font-family: 'Cinzel Decorative', cursive;
   font-size: 1.15em;
-  cursor: pointer;
+  cursor: default;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.2s ease;
   max-width: 320px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  user-select: none;
 }
 
 .active-game-pill i {
@@ -102,11 +102,6 @@ body {
   text-overflow: ellipsis;
 }
 
-.active-game-pill:hover {
-  background-color: rgba(35, 35, 35, 0.95);
-  border-color: #ffd700;
-  transform: translateY(-1px);
-}
 
 /* Container to make modal button responsive and centered*/
 #how-to {

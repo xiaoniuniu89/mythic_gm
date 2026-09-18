@@ -1035,6 +1035,10 @@ async function loadGame(id, shouldCloseModal) {
   if (activeGameNameSpan) {
     activeGameNameSpan.textContent = game.name || 'Untitled Adventure';
   }
+  if (activeGamePill) {
+    activeGamePill.title = 'Current Adventure: ' + (game.name || 'Untitled Adventure');
+  }
+
 
   try {
     localStorage.setItem('mythic_gm_active_id', String(game.id));
@@ -1300,8 +1304,8 @@ if (importGamesInput) {
 
 // Modal Event Listeners
 if (gamesMenuBtn) gamesMenuBtn.onclick = openGamesModal;
-if (activeGamePill) activeGamePill.onclick = openGamesModal;
 if (closeGamesModalBtn) closeGamesModalBtn.onclick = closeGamesModal;
+
 if (closeGamesModalBtn2) closeGamesModalBtn2.onclick = closeGamesModal;
 if (gamesModalBackdrop) gamesModalBackdrop.onclick = closeGamesModal;
 
