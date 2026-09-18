@@ -49,3 +49,13 @@ Chronological record of all updates, ingests, and compilations in this developer
   - Enabled real-time auto-saving on any state mutation (chaos changes, card additions, edits, deletions).
   - Implemented offline JSON Backup and Restore features for easy portability.
 
+## [2026-09-18 22:40] ux improvement | Inline Adventure Rename & Clean Zero-Adventures Empty State
+- **Inline Card Title Editing:**
+  - Replaced native `prompt()` dialogs (which fail in Electron) with an inline edit field inside each adventure card.
+  - Supports Enter to save, Escape or cancel button to dismiss, and auto-selects text on open.
+- **Zero-Adventures Empty State:**
+  - Removed auto-creation of dummy fallback adventure ("New Adventure") when all adventures are deleted.
+  - Added clean `.empty-adventures-box` prompting user to enter a new adventure title, with automatic input focus.
+  - `clearActiveGameState()` cleanly resets the active adventure indicator to "No Adventure".
+
+
